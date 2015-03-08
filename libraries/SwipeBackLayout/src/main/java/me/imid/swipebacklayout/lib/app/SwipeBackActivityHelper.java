@@ -1,9 +1,9 @@
 package me.imid.swipebacklayout.lib.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
@@ -11,9 +11,10 @@ import me.imid.swipebacklayout.lib.Utils;
 
 /**
  * @author Yrom
+ * @author PeterCxy
  */
 public class SwipeBackActivityHelper {
-    private Activity mActivity;
+    protected Activity mActivity;
 
     private SwipeBackLayout mSwipeBackLayout;
 
@@ -23,10 +24,7 @@ public class SwipeBackActivityHelper {
 
     @SuppressWarnings("deprecation")
     public void onActivityCreate() {
-        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mActivity.getWindow().getDecorView().setBackgroundDrawable(null);
-        mSwipeBackLayout = (SwipeBackLayout) LayoutInflater.from(mActivity).inflate(
-                me.imid.swipebacklayout.lib.R.layout.swipeback_layout, null);
+        mSwipeBackLayout = new SwipeBackLayout(getContext());
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
             public void onScrollStateChange(int state, float scrollPercent) {
@@ -46,6 +44,8 @@ public class SwipeBackActivityHelper {
 
     public void onPostCreate() {
         mSwipeBackLayout.attachToActivity(mActivity);
+        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+		mActivity.getWindow().getDecorView().setBackground(null);
     }
 
     public View findViewById(int id) {
@@ -57,5 +57,9 @@ public class SwipeBackActivityHelper {
 
     public SwipeBackLayout getSwipeBackLayout() {
         return mSwipeBackLayout;
+    }
+	
+	protected Context getContext() {
+        return mActivity;
     }
 }
