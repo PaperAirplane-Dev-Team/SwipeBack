@@ -73,8 +73,20 @@ public class ModSwipeBack implements IXposedHookLoadPackage
 				}
 			}
 		});
+		
+		findAndHookMethod(Activity.class, "findViewById", int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+				if (mhparams.getResult() == null) {
+					SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
+					if (helper != null) {
+						mhparams.setResult(helper.findViewById((int) mhparams.args[0]));
+					}
+				}
+			}
+		});
 	}
-	
+
 	private static boolean shouldExclude(String name) {
 		if (name.equals("com.android.systemui")) {
 			return true;
