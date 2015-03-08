@@ -24,7 +24,7 @@ public class SwipeBackActivityHelper {
 
     @SuppressWarnings("deprecation")
     public void onActivityCreate() {
-        mSwipeBackLayout = new SwipeBackLayout(getContext());
+        mSwipeBackLayout = new SwipeBackLayout(mActivity, getGlobalContext());
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
             public void onScrollStateChange(int state, float scrollPercent) {
@@ -59,7 +59,7 @@ public class SwipeBackActivityHelper {
         return mSwipeBackLayout;
     }
 	
-	protected Context getContext() {
+	protected Context getGlobalContext() {
         return mActivity;
     }
 }

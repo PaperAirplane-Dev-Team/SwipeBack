@@ -121,19 +121,19 @@ public class SwipeBackLayout extends FrameLayout {
      */
     private int mTrackingEdge;
 
-    public SwipeBackLayout(Context context) {
-        this(context, null);
+    public SwipeBackLayout(Context context, Context gbContext) {
+        this(context, gbContext, null);
     }
 
-    public SwipeBackLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.SwipeBackLayoutStyle);
+    public SwipeBackLayout(Context context, Context gbContext, AttributeSet attrs) {
+        this(context, gbContext, attrs, R.attr.SwipeBackLayoutStyle);
     }
 
-    public SwipeBackLayout(Context context, AttributeSet attrs, int defStyle) {
+    public SwipeBackLayout(Context context, Context gbContext, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         mDragHelper = ViewDragHelper.create(this, new ViewDragCallback());
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SwipeBackLayout, defStyle,
+        TypedArray a = gbContext.obtainStyledAttributes(attrs, R.styleable.SwipeBackLayout, defStyle,
                 R.style.SwipeBackLayout);
 
         int edgeSize = a.getDimensionPixelSize(R.styleable.SwipeBackLayout_edge_size, -1);
@@ -148,9 +148,9 @@ public class SwipeBackLayout extends FrameLayout {
                 R.drawable.shadow_right);
         int shadowBottom = a.getResourceId(R.styleable.SwipeBackLayout_shadow_bottom,
                 R.drawable.shadow_bottom);
-        setShadow(shadowLeft, EDGE_LEFT);
-        setShadow(shadowRight, EDGE_RIGHT);
-        setShadow(shadowBottom, EDGE_BOTTOM);
+        setShadow(gbContext.getResources().getDrawable(shadowLeft), EDGE_LEFT);
+        setShadow(gbContext.getResources().getDrawable(shadowRight), EDGE_RIGHT);
+        setShadow(gbContext.getResources().getDrawable(shadowBottom), EDGE_BOTTOM);
         a.recycle();
         final float density = getResources().getDisplayMetrics().density;
         final float minVel = MIN_FLING_VELOCITY * density;

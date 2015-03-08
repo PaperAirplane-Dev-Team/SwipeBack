@@ -13,11 +13,11 @@ public class MySwipeBackHelper extends SwipeBackActivityHelper
 	}
 	
 	@Override
-	protected Context getContext() {
+	protected Context getGlobalContext() {
 		try {
 			return mActivity.createPackageContext("info.papdt.swipeback", Context.CONTEXT_IGNORE_SECURITY);
 		} catch (Exception e) {
-			return super.getContext();
+			return super.getGlobalContext();
 		}
 	}
 }
