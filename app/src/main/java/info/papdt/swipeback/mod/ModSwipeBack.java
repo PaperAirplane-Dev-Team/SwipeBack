@@ -30,7 +30,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 
 				if (ar != null)
 					hookActivityRecord(ar);
-			} catch (Exception e) {
+			} catch (ClassNotFoundError e) {
 				// Exception is thrown in pre-Lollipop system
 			}
 		}
@@ -44,7 +44,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			
 			if (ar != null)
 				hookActivityRecord(ar);
-		} catch (Exception e) {
+		} catch (ClassNotFoundError e) {
 			// Exception is thrown in Lollipop
 		}
 		
