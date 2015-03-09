@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Build;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -16,7 +17,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 import info.papdt.swipeback.helper.MySwipeBackHelper;
 import static info.papdt.swipeback.BuildConfig.DEBUG;
 
-public class ModSwipeBack implements IXposedHookLoadPackage
+public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteInit
 {
 	private static final String TAG = ModSwipeBack.class.getSimpleName();
 
@@ -48,14 +49,19 @@ public class ModSwipeBack implements IXposedHookLoadPackage
 				}
 			});
 			return;
-		} else if (shouldExclude(lpparam.packageName)) {
-			return;
 		}
-		
+	}
+
+	@Override
+	public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) throws Throwable {
 		findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				Activity activity = (Activity) mhparams.thisObject;
+				
+				if (shouldExclude(activity.getApplicationInfo().packageName))
+					return;
+				
 				SwipeBackActivityHelper helper = new MySwipeBackHelper(activity);
 				helper.onActivityCreate();
 				helper.getSwipeBackLayout().setEnableGesture(true);
@@ -63,7 +69,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage
 				setAdditionalInstanceField(activity, "helper", helper);
 			}
 		});
-		
+
 		findAndHookMethod(Activity.class, "onPostCreate", Bundle.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
@@ -73,7 +79,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage
 				}
 			}
 		});
-		
+
 		findAndHookMethod(Activity.class, "findViewById", int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
