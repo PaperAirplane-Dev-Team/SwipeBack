@@ -23,37 +23,31 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 
 	@Override
 	public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-		log("Loading package " + lpparam.packageName);
-		
 		if (lpparam.packageName.equals("android")) {
-			Class<?> ar = findClass("com.android.server.am.ActivityRecord", lpparam.classLoader);
+			log("detected android framework");
+			try {
+				Class<?> ar = findClass("com.android.server.am.ActivityRecord", lpparam.classLoader);
 
-			XposedBridge.hookAllConstructors(ar, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-					String packageName = getObjectField(mhparams.thisObject, "packageName").toString();
-					if (shouldExclude(packageName))
-						return;
-					
-					boolean isHome = false;
-					if (Build.VERSION.SDK_INT >= 19) {
-						isHome = Boolean.valueOf(callMethod(mhparams.thisObject, "isHomeActivity"));
-					} else {
-						isHome = getBooleanField(mhparams.thisObject, "isHomeActivity");
-					}
-
-					if (!isHome) {
-						// fullscreen = false means transparent
-						setBooleanField(mhparams.thisObject, "fullscreen", false);
-					}
-				}
-			});
-			return;
+				if (ar != null)
+					hookActivityRecord(ar);
+			} catch (Exception e) {
+				// Exception is thrown in pre-Lollipop system
+			}
 		}
 	}
 
 	@Override
 	public void initZygote(IXposedHookZygoteInit.StartupParam startupParam) throws Throwable {
+		
+		try {
+			Class<?> ar = findClass("com.android.server.am.ActivityRecord", null);
+			
+			if (ar != null)
+				hookActivityRecord(ar);
+		} catch (Exception e) {
+			// Exception is thrown in Lollipop
+		}
+		
 		findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
@@ -88,6 +82,29 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 					if (helper != null) {
 						mhparams.setResult(helper.findViewById((int) mhparams.args[0]));
 					}
+				}
+			}
+		});
+	}
+	
+	private void hookActivityRecord(Class<?> clazz) throws Throwable {
+		XposedBridge.hookAllConstructors(clazz, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+				String packageName = getObjectField(mhparams.thisObject, "packageName").toString();
+				if (shouldExclude(packageName))
+					return;
+
+				boolean isHome = false;
+				if (Build.VERSION.SDK_INT >= 19) {
+					isHome = Boolean.valueOf(callMethod(mhparams.thisObject, "isHomeActivity"));
+				} else {
+					isHome = getBooleanField(mhparams.thisObject, "isHomeActivity");
+				}
+
+				if (!isHome) {
+					// fullscreen = false means transparent
+					setBooleanField(mhparams.thisObject, "fullscreen", false);
 				}
 			}
 		});
