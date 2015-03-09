@@ -25,12 +25,12 @@ public class Utils {
      * with the {@link android.R.attr#windowIsFloating} attribute.
      */
     public static void convertActivityFromTranslucent(Activity activity) {
-        try {
+        /*try {
             Method method = Activity.class.getDeclaredMethod("convertFromTranslucent");
             method.setAccessible(true);
             method.invoke(activity);
         } catch (Throwable t) {
-        }
+        }*/
     }
 
     /**
@@ -46,7 +46,7 @@ public class Utils {
      * with the {@link android.R.attr#windowIsFloating} attribute.
      */
     public static void convertActivityToTranslucent(Activity activity) {
-        try {
+        /*try {
             Class<?>[] classes = Activity.class.getDeclaredClasses();
             Class<?> translucentConversionListenerClazz = null;
             for (Class clazz : classes) {
@@ -61,6 +61,6 @@ public class Utils {
                 null
             });
         } catch (Throwable t) {
-        }
+        }*/
     }
 }
