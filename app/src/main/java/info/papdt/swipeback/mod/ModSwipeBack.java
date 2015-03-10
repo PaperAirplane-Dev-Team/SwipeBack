@@ -18,6 +18,7 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 import info.papdt.swipeback.helper.MySwipeBackHelper;
+import static info.papdt.swipeback.helper.Utility.*;
 import static info.papdt.swipeback.BuildConfig.DEBUG;
 
 public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteInit
@@ -56,7 +57,12 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				Activity activity = (Activity) mhparams.thisObject;
 				
-				if (shouldExclude(activity.getApplicationInfo().packageName))
+				String packageName = activity.getApplicationInfo().packageName;
+				
+				if (shouldExclude(packageName))
+					return;
+				
+				if (isLauncher(activity, packageName))
 					return;
 				
 				SwipeBackActivityHelper helper = new MySwipeBackHelper(activity);
