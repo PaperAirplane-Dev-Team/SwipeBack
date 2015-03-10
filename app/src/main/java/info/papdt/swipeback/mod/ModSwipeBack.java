@@ -98,34 +98,37 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			}
 		});
 		
-		if (Build.VERSION.SDK_INT < 21) return;
 		// Hack into DecorView for Lollipop's status bar
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindow.DecorView", null, "updateColorViews", WindowInsets.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-				SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
-				if (helper != null) {
-					SwipeBackLayout swipe = helper.getSwipeBackLayout();
-					ViewGroup layout = (ViewGroup) swipe.getChildAt(0);
-					ViewGroup decor = (ViewGroup) mhparams.thisObject;
+		try {
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindow.DecorView", null, "updateColorViews", WindowInsets.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+					SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
+					if (helper != null) {
+						SwipeBackLayout swipe = helper.getSwipeBackLayout();
+						ViewGroup layout = (ViewGroup) swipe.getChildAt(0);
+						ViewGroup decor = (ViewGroup) mhparams.thisObject;
+						
+						View status = (View) getObjectField(decor, "mStatusColorView");
+						View nav = (View) getObjectField(decor, "mNavigationColorView");
+						
+						if (status != null && status.getParent() == decor) {
+							ViewGroup.LayoutParams params = status.getLayoutParams();
+							decor.removeView(status);
+							layout.addView(status, params);
+						}
 					
-					View status = (View) getObjectField(decor, "mStatusColorView");
-					View nav = (View) getObjectField(decor, "mNavigationColorView");
-					
-					if (status != null && status.getParent() == decor) {
-						ViewGroup.LayoutParams params = status.getLayoutParams();
-						decor.removeView(status);
-						layout.addView(status, params);
-					}
-					
-					if (nav != null && nav.getParent() == decor) {
-						ViewGroup.LayoutParams params = nav.getLayoutParams();
-						decor.removeView(nav);
-						layout.addView(nav, params);
+						if (nav != null && nav.getParent() == decor) {
+							ViewGroup.LayoutParams params = nav.getLayoutParams();
+							decor.removeView(nav);
+							layout.addView(nav, params);
+						}
 					}
 				}
-			}
-		});
+			});
+		} catch (Throwable t) {
+			
+		}
 	}
 	
 	private void hookActivityRecord(Class<?> clazz) throws Throwable {
