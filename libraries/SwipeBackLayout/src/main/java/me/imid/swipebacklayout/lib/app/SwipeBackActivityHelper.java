@@ -29,7 +29,6 @@ public class SwipeBackActivityHelper {
 
     public void onPostCreate() {
         mSwipeBackLayout.attachToActivity(mActivity);
-        mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(0));
     }
 
     public View findViewById(int id) {
