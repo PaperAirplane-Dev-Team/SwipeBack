@@ -109,6 +109,9 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 						ViewGroup layout = (ViewGroup) swipe.getChildAt(0);
 						ViewGroup decor = (ViewGroup) mhparams.thisObject;
 						
+						swipe.setFitsSystemWindows(false);
+						layout.setFitsSystemWindows(false);
+						
 						View status = (View) getObjectField(decor, "mStatusColorView");
 						View nav = (View) getObjectField(decor, "mNavigationColorView");
 						
