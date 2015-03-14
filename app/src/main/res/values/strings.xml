@@ -3,5 +3,11 @@
 
 	<string name="app_name">SwipeBack2</string>
 	<string name="app_desc">Global swipe-to-return gesture</string>
+	
+	<!-- Per-app -->
+	<string name="global">Global (Overriden by specific settings)</string>
+	
+	<!-- Messages -->
+	<string name="plz_wait">Please wait...</string>
 
 </resources>
