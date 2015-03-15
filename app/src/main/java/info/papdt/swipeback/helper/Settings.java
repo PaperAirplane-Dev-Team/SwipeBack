@@ -15,6 +15,7 @@ public abstract class Settings
 	public static final String PREF = "pref";
 	public static final String GLOBAL = "global";
 	public static final String ENABLE = "enable";
+	public static final String EDGE = "edge";
 	
 	private static XSettings sXSettings;
 	private static AppSettings sAppSettings;
@@ -40,7 +41,9 @@ public abstract class Settings
 	}
 	
 	public abstract boolean getBoolean(String packageName, String className, String key, boolean defValue);
+	public abstract int getInt(String packageName, String className, String key, int defValue);
 	public abstract void putBoolean(String packageName, String className, String key, boolean value);
+	public abstract void putInt(String packageName, String className, String key, int value);
 	public abstract void remove(String packageName, String className, String key);
 	protected abstract boolean contains(String key);
 	
@@ -106,7 +109,17 @@ public abstract class Settings
 		}
 
 		@Override
+		public int getInt(String packageName, String className, String key, int defValue) {
+			return mPref.getInt(fallback(packageName, className, key), defValue);
+		}
+
+		@Override
 		public void putBoolean(String packageName, String className, String key, boolean value) {
+			throwException();
+		}
+
+		@Override
+		public void putInt(String packageName, String className, String key, int value) {
 			throwException();
 		}
 		
@@ -138,8 +151,18 @@ public abstract class Settings
 		}
 
 		@Override
+		public int getInt(String packageName, String className, String key, int defValue) {
+			return mPref.getInt(fallback(packageName, className, key), defValue);
+		}
+
+		@Override
 		public void putBoolean(String packageName, String className, String key, boolean value) {
 			mPref.edit().putBoolean(buildKey(packageName, className, key), value).commit();
+		}
+
+		@Override
+		public void putInt(String packageName, String className, String key, int value) {
+			mPref.edit().putInt(buildKey(packageName, className, key), value).commit();
 		}
 	}
 }

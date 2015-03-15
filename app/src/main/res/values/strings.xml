@@ -8,6 +8,17 @@
 	<string name="global">Global (Overriden by specific settings)</string>
 	<string name="global_short">Global</string>
 	<string name="enable">Enable SwipeBack</string>
+	<string name="edge">Trigger Edge</string>
+	<string-array name="edge_list">
+		<item>Left</item>
+		<item>Right</item>
+		<item>Bottom</item>
+	</string-array>
+	<string-array name="edge_values" translatable="false">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
 	
 	<!-- Messages -->
 	<string name="search">Search</string>

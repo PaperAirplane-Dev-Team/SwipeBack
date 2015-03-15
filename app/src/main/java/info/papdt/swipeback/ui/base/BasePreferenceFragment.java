@@ -46,9 +46,11 @@ public abstract class BasePreferenceFragment extends PreferenceFragment implemen
 		getGlobalActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
-	protected void $$(Preference preference) {
-		preference.setOnPreferenceClickListener(this);
-		preference.setOnPreferenceChangeListener(this);
+	protected void $$(Preference... preferences) {
+		for (Preference preference : preferences) {
+			preference.setOnPreferenceClickListener(this);
+			preference.setOnPreferenceChangeListener(this);
+		}
 	}
 	
 	protected abstract int getPreferenceXml();

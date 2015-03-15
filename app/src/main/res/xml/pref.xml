@@ -7,4 +7,11 @@
 		android:title="@string/enable"
 		android:defaultValue="true"/>
 	
+	<MultiSelectListPreference
+		android:key="edge"
+		android:title="@string/edge"
+		android:dependency="enable"
+		android:entries="@array/edge_list"
+		android:entryValues="@array/edge_values"/>
+	
 </PreferenceScreen>

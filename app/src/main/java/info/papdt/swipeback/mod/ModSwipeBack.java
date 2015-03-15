@@ -73,7 +73,10 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				SwipeBackActivityHelper helper = new MySwipeBackHelper(activity);
 				helper.onActivityCreate();
 				helper.getSwipeBackLayout().setEnableGesture(true);
-				helper.getSwipeBackLayout().setEdgeTrackingEnabled(SwipeBackLayout.EDGE_RIGHT);
+				
+				mSettings.reload();
+				int edge = mSettings.getInt(packageName, className, Settings.EDGE, SwipeBackLayout.EDGE_LEFT);
+				helper.getSwipeBackLayout().setEdgeTrackingEnabled(edge);
 				setAdditionalInstanceField(activity, "helper", helper);
 			}
 		});
