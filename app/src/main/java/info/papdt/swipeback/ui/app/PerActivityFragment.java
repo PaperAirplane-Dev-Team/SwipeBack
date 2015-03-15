@@ -48,14 +48,20 @@ public class PerActivityFragment extends BaseListFragment
 		global.title = getString(R.string.global);
 		mActivityList.add(global);
 		
-		if (ai == null)
-			return;
+		if (ai != null) {
+			for (ActivityInfo info : ai) {
+				ActivityModel activity = new ActivityModel();
+				activity.className = info.name;
+				activity.title = info.loadLabel(pm).toString();
+				mActivityList.add(activity);
+			}
+		}
 		
-		for (ActivityInfo info : ai) {
-			ActivityModel activity = new ActivityModel();
-			activity.className = info.name;
-			activity.title = info.loadLabel(pm).toString();
-			mActivityList.add(activity);
+		// If size is smaller than 2, which means the app has only one or no activity
+		// Then we can skip this fragment and go to settings directly
+		if (mActivityList.size() <= 2) {
+			onItemClick(0);
+			getActivity().finish();
 		}
 	}
 
