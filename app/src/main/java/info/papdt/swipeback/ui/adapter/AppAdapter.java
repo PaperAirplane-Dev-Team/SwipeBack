@@ -5,22 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.papdt.swipeback.R;
 import info.papdt.swipeback.ui.model.AppModel;
 import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
-public class AppAdapter extends BaseAdapter
+public class AppAdapter extends BaseAdapter implements Filterable
 {
 	private List<AppModel> mList;
+	private List<AppModel> mFullList;
 	private LayoutInflater mInflater;
 	
 	public AppAdapter(Context context, List<AppModel> list) {
 		mList = list;
+		mFullList = list;
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -30,7 +35,7 @@ public class AppAdapter extends BaseAdapter
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public AppModel getItem(int position) {
 		return mList.get(position);
 	}
 
@@ -60,6 +65,41 @@ public class AppAdapter extends BaseAdapter
 		pkg.setText(app.packageName);
 		
 		return v;
+	}
+
+	@Override
+	public Filter getFilter() {
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				String query = constraint.toString().toLowerCase();
+				List<AppModel> filtered = new ArrayList<AppModel>();
+				
+				if (query.equals("")) {
+					filtered = mFullList;
+				} else {
+					for (AppModel app : mFullList) {
+						if (app.title.toLowerCase().contains(query)
+							|| app.packageName.toLowerCase().contains(query)) 
+							
+							filtered.add(app);
+					}
+				}
+				
+				FilterResults result = new FilterResults();
+				result.count = filtered.size();
+				result.values = filtered;
+				
+				return result;
+			}
+
+			@Override
+			@SuppressWarnings("unchecked")
+			protected void publishResults(CharSequence constraint, FilterResults result) {
+				mList = (List<AppModel>) result.values;
+				notifyDataSetChanged();
+			}
+		};
 	}
 
 }

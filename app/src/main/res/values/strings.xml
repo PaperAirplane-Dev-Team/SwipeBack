@@ -10,6 +10,7 @@
 	<string name="enable">Enable SwipeBack</string>
 	
 	<!-- Messages -->
+	<string name="search">Search</string>
 	<string name="plz_wait">Please wait...</string>
 
 </resources>
