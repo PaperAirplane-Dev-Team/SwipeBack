@@ -1,6 +1,7 @@
 package info.papdt.swipeback.mod;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Build;
 import android.view.View;
@@ -18,12 +19,15 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 import info.papdt.swipeback.helper.MySwipeBackHelper;
+import info.papdt.swipeback.helper.Settings;
 import static info.papdt.swipeback.helper.Utility.*;
 import static info.papdt.swipeback.BuildConfig.DEBUG;
 
 public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteInit
 {
 	private static final String TAG = ModSwipeBack.class.getSimpleName();
+	
+	private Settings mSettings = Settings.getInstance(null);
 
 	@Override
 	public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
@@ -58,8 +62,9 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				Activity activity = (Activity) mhparams.thisObject;
 				
 				String packageName = activity.getApplicationInfo().packageName;
+				String className = activity.getClass().getName();
 				
-				if (shouldExclude(packageName))
+				if (shouldExclude(packageName, className))
 					return;
 				
 				if (isLauncher(activity, packageName))
@@ -139,7 +144,8 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				String packageName = getObjectField(mhparams.thisObject, "packageName").toString();
-				if (shouldExclude(packageName))
+				ActivityInfo activity = (ActivityInfo) getObjectField(mhparams.thisObject, "info");
+				if (shouldExclude(packageName, activity.name))
 					return;
 
 				boolean isHome = false;
@@ -157,11 +163,12 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 		});
 	}
 
-	private static boolean shouldExclude(String name) {
-		if (name.equals("com.android.systemui")) {
+	private boolean shouldExclude(String packageName, String className) {
+		if (packageName.equals("com.android.systemui")) {
 			return true;
 		} else {
-			return false;
+			mSettings.reload();
+			return !mSettings.getBoolean(packageName, className, Settings.ENABLE, true);
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package info.papdt.swipeback.ui.app;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import info.papdt.swipeback.R;
 import info.papdt.swipeback.ui.adapter.ActivityAdapter;
 import info.papdt.swipeback.ui.base.BaseListFragment;
+import info.papdt.swipeback.ui.base.GlobalActivity;
 import info.papdt.swipeback.ui.model.ActivityModel;
 
 public class PerActivityFragment extends BaseListFragment
@@ -60,6 +62,19 @@ public class PerActivityFragment extends BaseListFragment
 			showHomeAsUp();
 			setTitle(mTitle + " - " + getString(R.string.app_name));
 		}
+	}
+
+	@Override
+	protected void onItemClick(int pos) {
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_MAIN);
+		i.setClass(getActivity(), GlobalActivity.class);
+		i.putExtra("fragment", "settings");
+		
+		ActivityModel activity = mActivityList.get(pos);
+		
+		i.putExtra("pass", getExtraPass() + "," + activity.className + "," + activity.title + "," + mTitle);
+		startActivity(i);
 	}
 
 }
