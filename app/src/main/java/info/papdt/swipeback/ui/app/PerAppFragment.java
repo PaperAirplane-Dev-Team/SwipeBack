@@ -5,9 +5,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.widget.BaseAdapter;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 
 import java.text.Collator;
@@ -21,11 +23,13 @@ import info.papdt.swipeback.ui.adapter.AppAdapter;
 import info.papdt.swipeback.ui.base.BaseListFragment;
 import info.papdt.swipeback.ui.base.GlobalActivity;
 import info.papdt.swipeback.ui.model.AppModel;
+import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
 public class PerAppFragment extends BaseListFragment
 {
 	private AppAdapter mAdapter;
 	private ArrayList<AppModel> mAppList = new ArrayList<AppModel>();
+	private MenuItem mSearchItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,8 @@ public class PerAppFragment extends BaseListFragment
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.app, menu);
 		
-		SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
+		mSearchItem = menu.findItem(R.id.search);
+		final SearchView search = $(MenuItemCompat.getActionView(mSearchItem));
 		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 				@Override
 				public boolean onQueryTextSubmit(String query) {
@@ -95,6 +100,30 @@ public class PerAppFragment extends BaseListFragment
 					return true;
 				}
 		});
+		
+		search.setIconified(true);
+		
+		MenuItemCompat.setOnActionExpandListener(mSearchItem, new MenuItemCompat.OnActionExpandListener() {
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem item) {
+				showHomeAsUp();
+				search.setIconified(false);
+				return true;
+			}
+
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem p1) {
+				hideHomeAsUp();
+				search.setQuery("", false);
+				search.setIconified(true);
+				return true;
+			}
+		});
+	}
+	
+	@Override
+	protected void onReturn() {
+		MenuItemCompat.collapseActionView(mSearchItem);
 	}
 
 }

@@ -18,8 +18,13 @@ import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
 public class GlobalActivity extends ActionBarActivity
 {
+	static interface OnReturnCallback {
+		void onReturn();
+	}
+	
 	private Toolbar mToolbar;
 	private String mExtraPass;
+	private OnReturnCallback mOnReturn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,10 @@ public class GlobalActivity extends ActionBarActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-			finish();
+			if (mOnReturn != null)
+				mOnReturn.onReturn();
+			else
+				finish();
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -74,5 +82,9 @@ public class GlobalActivity extends ActionBarActivity
 	
 	String getExtraPass() {
 		return mExtraPass;
+	}
+	
+	void setOnReturnCallback(OnReturnCallback callback) {
+		mOnReturn = callback;
 	}
 }

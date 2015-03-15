@@ -15,6 +15,14 @@ public abstract class BaseFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View v = inflater.inflate(getLayoutId(), container, false);
 		onFinishInflate(v);
+		
+		getGlobalActivity().setOnReturnCallback(new GlobalActivity.OnReturnCallback() {
+			@Override
+			public void onReturn() {
+				BaseFragment.this.onReturn();
+			}
+		});
+		
 		return v;
 	}
 
@@ -36,6 +44,14 @@ public abstract class BaseFragment extends Fragment
 	
 	protected void showHomeAsUp() {
 		getGlobalActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
+	protected void hideHomeAsUp() {
+		getGlobalActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	}
+	
+	protected void onReturn() {
+		getActivity().finish();
 	}
 	
 	protected abstract int getLayoutId();

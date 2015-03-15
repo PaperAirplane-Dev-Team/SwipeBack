@@ -18,4 +18,8 @@ public class UiUtility
 	public static <T extends Preference> T $(PreferenceFragment preference, String key) {
 		return (T) preference.findPreference(key);
 	}
+	
+	public static <T> T $(Object obj) {
+		return (T) obj;
+	}
 }
