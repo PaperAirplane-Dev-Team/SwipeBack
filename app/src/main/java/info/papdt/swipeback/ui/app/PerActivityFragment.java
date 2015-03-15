@@ -48,6 +48,9 @@ public class PerActivityFragment extends BaseListFragment
 		global.title = getString(R.string.global);
 		mActivityList.add(global);
 		
+		if (ai == null)
+			return;
+		
 		for (ActivityInfo info : ai) {
 			ActivityModel activity = new ActivityModel();
 			activity.className = info.name;
