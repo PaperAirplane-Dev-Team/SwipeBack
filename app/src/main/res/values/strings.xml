@@ -6,6 +6,7 @@
 	
 	<!-- Per-app -->
 	<string name="global">Global (Overriden by specific settings)</string>
+	<string name="global_short">Global</string>
 	
 	<!-- Messages -->
 	<string name="plz_wait">Please wait...</string>

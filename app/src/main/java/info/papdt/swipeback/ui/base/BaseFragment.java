@@ -30,6 +30,14 @@ public abstract class BaseFragment extends Fragment
 		return getGlobalActivity().getExtraPass();
 	}
 	
+	protected void setTitle(String title) {
+		getGlobalActivity().getSupportActionBar().setTitle(title);
+	}
+	
+	protected void showHomeAsUp() {
+		getGlobalActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+	
 	protected abstract int getLayoutId();
 	protected abstract void onFinishInflate(View view);
 }

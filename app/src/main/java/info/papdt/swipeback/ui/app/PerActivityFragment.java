@@ -1,6 +1,7 @@
 package info.papdt.swipeback.ui.app;
 
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.widget.BaseAdapter;
 
@@ -15,6 +16,7 @@ public class PerActivityFragment extends BaseListFragment
 {
 	private ArrayList<ActivityModel> mActivityList = new ArrayList<ActivityModel>();
 	private BaseAdapter mAdapter;
+	private String mTitle = "";
 
 	@Override
 	protected BaseAdapter buildAdapter() {
@@ -30,10 +32,12 @@ public class PerActivityFragment extends BaseListFragment
 		ActivityInfo[] ai;
 		
 		try {
-			ai = pm.getPackageInfo(getExtraPass(), PackageManager.GET_ACTIVITIES).activities;
+			PackageInfo pkg = pm.getPackageInfo(getExtraPass(), PackageManager.GET_ACTIVITIES);
+			ai = pkg.activities;
+			mTitle = pm.getApplicationLabel(pkg.applicationInfo).toString();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
-			//return;
+			ai = new ActivityInfo[0];
+			mTitle = getString(R.string.global_short);
 		}
 		
 		// Add the default one
@@ -47,6 +51,14 @@ public class PerActivityFragment extends BaseListFragment
 			activity.className = info.name;
 			activity.title = info.loadLabel(pm).toString();
 			mActivityList.add(activity);
+		}
+	}
+
+	@Override
+	protected void onDataLoaded() {
+		if (!mTitle.equals("")) {
+			showHomeAsUp();
+			setTitle(mTitle + " - " + getString(R.string.app_name));
 		}
 	}
 

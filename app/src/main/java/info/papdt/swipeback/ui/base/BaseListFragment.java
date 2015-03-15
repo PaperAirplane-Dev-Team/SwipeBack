@@ -40,6 +40,10 @@ public abstract class BaseListFragment extends BaseFragment
 		
 	}
 	
+	protected void onDataLoaded() {
+		
+	}
+	
 	protected abstract BaseAdapter buildAdapter();
 	protected abstract void loadData();
 	
@@ -64,6 +68,7 @@ public abstract class BaseListFragment extends BaseFragment
 		protected void onPostExecute(Void result) {
 			prog.dismiss();
 			((BaseAdapter) mList.getAdapter()).notifyDataSetChanged();
+			onDataLoaded();
 		}
 		
 	}
