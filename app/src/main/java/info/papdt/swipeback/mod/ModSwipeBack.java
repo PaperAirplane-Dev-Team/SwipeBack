@@ -87,9 +87,6 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
 				if (helper != null) {
 					helper.onPostCreate();
-					
-					if (Build.VERSION.SDK_INT >= 21)
-						setAdditionalInstanceField(((Activity) mhparams.thisObject).getWindow().getDecorView(), "helper", helper);
 				}
 			}
 		});
