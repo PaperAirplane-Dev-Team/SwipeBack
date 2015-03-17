@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -78,15 +77,19 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				int edge = mSettings.getInt(packageName, className, Settings.EDGE, SwipeBackLayout.EDGE_LEFT);
 				helper.getSwipeBackLayout().setEdgeTrackingEnabled(edge);
 				setAdditionalInstanceField(activity, "helper", helper);
+				setAdditionalInstanceField(activity.getWindow(), "helper", helper);
 			}
 		});
-
+		
 		findAndHookMethod(Activity.class, "onPostCreate", Bundle.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
 				if (helper != null) {
 					helper.onPostCreate();
+					
+					if (Build.VERSION.SDK_INT == 21)
+						ModSDK21.afterOnPostCreateSDK21(mhparams);
 				}
 			}
 		});
@@ -102,6 +105,10 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				}
 			}
 		});
+		
+		if (Build.VERSION.SDK_INT >= 21) {
+			ModSDK21.zygoteSDK21();
+		}
 	}
 	
 	private void hookActivityRecord(Class<?> clazz) throws Throwable {
