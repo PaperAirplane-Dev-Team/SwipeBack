@@ -1,5 +1,6 @@
 package info.papdt.swipeback.ui.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.view.View;
@@ -24,6 +25,11 @@ public abstract class BaseListFragment extends BaseFragment
 				BaseListFragment.this.onItemClick(pos);
 			}
 		});
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 		new LoadDataTask().execute();
 	}
 	
