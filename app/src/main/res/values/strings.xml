@@ -9,6 +9,9 @@
 	<string name="global_short">Global</string>
 	<string name="enable">Enable SwipeBack</string>
 	<string name="edge">Trigger Edge</string>
+	<string name="experimental">Experimental</string>
+	<string name="lollipop_hack">Lollipop hacks (SDK >= 21)</string>
+	<string name="lollipop_hack_desc">Hacks specified for Lollipop and above. This includes optimizations for Lollipop, for example, this makes the status bar (if colored) look better while swiping.\nMay cause layout issues in some apps.</string>
 	<string-array name="edge_list">
 		<item>Left</item>
 		<item>Right</item>

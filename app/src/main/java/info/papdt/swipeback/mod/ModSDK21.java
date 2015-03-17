@@ -16,10 +16,14 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 import java.lang.reflect.Method;
 
 import info.papdt.swipeback.helper.WindowInsetsColorDrawable;
+import info.papdt.swipeback.helper.Settings;
 
 public class ModSDK21
 {
+	private static Settings mSettings;
+	
 	public static void zygoteSDK21() {
+		mSettings = Settings.getInstance(null);
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindow", null, "setStatusBarColor", int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
@@ -30,9 +34,12 @@ public class ModSDK21
 				if (helper != null) {
 					ViewGroup root = (ViewGroup) helper.getSwipeBackLayout().getChildAt(0);
 					View content = root.getChildAt(0);
-					WindowInsetsColorDrawable d = (WindowInsetsColorDrawable) content.getBackground();
-					d.setTopDrawable(new ColorDrawable(color));
-					((Method) mhparams.method).invoke(mhparams.thisObject, Color.TRANSPARENT);
+					
+					if (content.getBackground() instanceof WindowInsetsColorDrawable) {
+						WindowInsetsColorDrawable d = (WindowInsetsColorDrawable) content.getBackground();
+						d.setTopDrawable(new ColorDrawable(color));
+						((Method) mhparams.method).invoke(mhparams.thisObject, Color.TRANSPARENT);
+					}
 				}
 			}
 		});
@@ -45,17 +52,23 @@ public class ModSDK21
 		
 		SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
 		if (helper != null) {
+			final Activity activity = (Activity) mhparams.thisObject;
+
+			String packageName = activity.getApplicationInfo().packageName;
+			String className = activity.getClass().getName();
+			
+			mSettings.reload();
+			if (!mSettings.getBoolean(packageName, className, Settings.LOLLIPOP_HACK, false))
+				return;
+			
 			ViewGroup root = (ViewGroup) helper.getSwipeBackLayout().getChildAt(0);
 			View content = root.getChildAt(0);
 			final WindowInsetsColorDrawable bkg = new WindowInsetsColorDrawable(content.getBackground());
 			content.setBackground(bkg);
 
-			final Activity activity = (Activity) mhparams.thisObject;
 			TypedArray a = activity.getTheme().obtainStyledAttributes(internalTheme);
 			int primary = a.getColor(internalColorPrimary, Color.TRANSPARENT);
 			a.recycle();
-
-			setAdditionalInstanceField(activity.getWindow(), "helper", helper);
 
 			if (primary != Color.TRANSPARENT) {
 				bkg.setTopDrawable(new ColorDrawable(primary));

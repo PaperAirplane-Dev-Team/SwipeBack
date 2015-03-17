@@ -1,5 +1,7 @@
 package info.papdt.swipeback.ui.app;
 
+import android.os.Build;
+import android.preference.CheckBoxPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.SwitchPreference;
@@ -24,6 +26,7 @@ public class SettingsFragment extends BasePreferenceFragment
 	
 	private SwitchPreference mEnable;
 	private MultiSelectListPreference mEdge;
+	private CheckBoxPreference mLollipop;
 	
 	private String mPackageName, mClassName;
 
@@ -40,6 +43,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		// Obtain preferences
 		mEnable = $(this, Settings.ENABLE);
 		mEdge = $(this, Settings.EDGE);
+		mLollipop = $(this, Settings.LOLLIPOP_HACK);
 		
 		// Default values
 		mEnable.setChecked(getBoolean(Settings.ENABLE, true));
@@ -47,8 +51,13 @@ public class SettingsFragment extends BasePreferenceFragment
 		mEdge.setValues(edges);
 		mEdge.setSummary(buildEdgeText(edges));
 		
+		if (Build.VERSION.SDK_INT >= 21) {
+			mLollipop.setEnabled(true);
+			mLollipop.setChecked(getBoolean(Settings.LOLLIPOP_HACK, false));
+		}
+		
 		// Bind
-		$$(mEnable, mEdge);
+		$$(mEnable, mEdge, mLollipop);
 	}
 
 	@Override
@@ -60,6 +69,9 @@ public class SettingsFragment extends BasePreferenceFragment
 			Set<String> values = (Set<String>) newValue;
 			putInt(Settings.EDGE, buildEdgePref(values));
 			mEdge.setSummary(buildEdgeText(values));
+			return true;
+		} else if (preference == mLollipop) {
+			putBoolean(Settings.LOLLIPOP_HACK, Boolean.valueOf(newValue));
 			return true;
 		} else {
 			return false;

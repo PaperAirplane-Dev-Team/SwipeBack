@@ -14,4 +14,17 @@
 		android:entries="@array/edge_list"
 		android:entryValues="@array/edge_values"/>
 	
+	<PreferenceCategory
+		android:title="@string/experimental">
+		
+		<CheckBoxPreference
+			android:key="lollipop_hack"
+			android:title="@string/lollipop_hack"
+			android:summary="@string/lollipop_hack_desc"
+			android:checked="false"
+			android:enabled="false"
+			android:dependency="enable"/>
+		
+	</PreferenceCategory>
+	
 </PreferenceScreen>
