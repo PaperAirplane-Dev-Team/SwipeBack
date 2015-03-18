@@ -16,9 +16,6 @@ public class Utility
 	}
 	
 	public static <T> T $(Object obj) {
-		if (obj instanceof T)
-			return (T) obj;
-		else
-			return null;
+		return (T) obj;
 	}
 }

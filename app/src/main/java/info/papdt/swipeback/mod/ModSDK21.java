@@ -28,19 +28,18 @@ public class ModSDK21
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindow", null, "setStatusBarColor", int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-				int color = Integer.valueOf(mhparams.args[0]);
-				if (color == Color.TRANSPARENT)
+				int color = Integer.valueOf(mhparams.args[0].toString());
+				if (color == 0)
 					return;
 				SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 				if (helper != null) {
 					ViewGroup root = $(helper.getSwipeBackLayout().getChildAt(0));
 					View content = root.getChildAt(0);
 					
-					WindowInsetsColorDrawable d = $(content.getBackground());
-					
-					if (d != null) {
+					if (content.getBackground() instanceof WindowInsetsColorDrawable) {
+						WindowInsetsColorDrawable d = $(content.getBackground());
 						d.setTopDrawable(new ColorDrawable(color));
-						((Method) mhparams.method).invoke(mhparams.thisObject, Color.TRANSPARENT);	
+						((Method) mhparams.method).invoke(mhparams.thisObject, 0);	
 					}
 				}
 			}
@@ -51,8 +50,6 @@ public class ModSDK21
 		mSettings.reload();
 		if (mSettings.getBoolean(packageName, className, Settings.LOLLIPOP_HACK, false)) {
 			setAdditionalInstanceField(activity.getWindow(), "helper", helper);
-		} else {
-			setAdditionalInstanceField(activity.getWindow(), "helper", null);
 		}
 	}
 	
@@ -76,20 +73,23 @@ public class ModSDK21
 			View content = root.getChildAt(0);
 			final WindowInsetsColorDrawable bkg = new WindowInsetsColorDrawable(content.getBackground());
 			content.setBackground(bkg);
-
+			
 			TypedArray a = activity.getTheme().obtainStyledAttributes(internalTheme);
-			int primary = a.getColor(internalColorPrimary, Color.TRANSPARENT);
+			int primary = a.getColor(internalColorPrimary, 0);
 			a.recycle();
 
-			if (primary != Color.TRANSPARENT) {
+			if (primary != 0) {
 				bkg.setTopDrawable(new ColorDrawable(primary));
+			} else {
+				content.setSystemUiVisibility(content.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+				content.setFitsSystemWindows(true);
 			}
 
 			root.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
 				@Override
 				public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
 					bkg.setTopInset(insets.getSystemWindowInsetTop());
-					activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+					activity.getWindow().setStatusBarColor(0);
 					return insets;
 				}
 			});
