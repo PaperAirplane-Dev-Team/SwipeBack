@@ -45,6 +45,15 @@ public class ModSDK21
 		});
 	}
 	
+	public static void afterOnCreateSDK21(SwipeBackActivityHelper helper, Activity activity, String packageName, String className) throws Throwable {
+		mSettings.reload();
+		if (mSettings.getBoolean(packageName, className, Settings.LOLLIPOP_HACK, false)) {
+			setAdditionalInstanceField(activity.getWindow(), "helper", helper);
+		} else {
+			setAdditionalInstanceField(activity.getWindow(), "helper", null);
+		}
+	}
+	
 	public static void afterOnPostCreateSDK21(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 		Class<?> internalStyleable = findClass("com.android.internal.R.styleable", null);
 		int[] internalTheme = (int[]) getStaticObjectField(internalStyleable, "Theme");
