@@ -58,7 +58,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 		findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-				Activity activity = (Activity) mhparams.thisObject;
+				Activity activity = $(mhparams.thisObject);
 				
 				String packageName = activity.getApplicationInfo().packageName;
 				String className = activity.getClass().getName();
@@ -86,7 +86,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 		findAndHookMethod(Activity.class, "onPostCreate", Bundle.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-				SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
+				SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 				if (helper != null) {
 					helper.onPostCreate();
 					
@@ -100,7 +100,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				if (mhparams.getResult() == null) {
-					SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
+					SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 					if (helper != null) {
 						mhparams.setResult(helper.findViewById((int) mhparams.args[0]));
 					}
@@ -117,8 +117,8 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 		XposedBridge.hookAllConstructors(clazz, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-				String packageName = getObjectField(mhparams.thisObject, "packageName").toString();
-				ActivityInfo activity = (ActivityInfo) getObjectField(mhparams.thisObject, "info");
+				String packageName = $(getObjectField(mhparams.thisObject, "packageName"));
+				ActivityInfo activity = $(getObjectField(mhparams.thisObject, "info"));
 				if (shouldExclude(packageName, activity.name))
 					return;
 

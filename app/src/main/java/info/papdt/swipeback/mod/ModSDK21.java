@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 
 import info.papdt.swipeback.helper.WindowInsetsColorDrawable;
 import info.papdt.swipeback.helper.Settings;
+import static info.papdt.swipeback.helper.Utility.*;
 
 public class ModSDK21
 {
@@ -27,18 +28,19 @@ public class ModSDK21
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindow", null, "setStatusBarColor", int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
-				int color = Integer.valueOf(mhparams.args[0].toString());
-				if (color == 0)
+				int color = Integer.valueOf(mhparams.args[0]);
+				if (color == Color.TRANSPARENT)
 					return;
-				SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
+				SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 				if (helper != null) {
-					ViewGroup root = (ViewGroup) helper.getSwipeBackLayout().getChildAt(0);
+					ViewGroup root = $(helper.getSwipeBackLayout().getChildAt(0));
 					View content = root.getChildAt(0);
 					
-					if (content.getBackground() instanceof WindowInsetsColorDrawable) {
-						WindowInsetsColorDrawable d = (WindowInsetsColorDrawable) content.getBackground();
+					WindowInsetsColorDrawable d = $(content.getBackground());
+					
+					if (d != null) {
 						d.setTopDrawable(new ColorDrawable(color));
-						((Method) mhparams.method).invoke(mhparams.thisObject, Color.TRANSPARENT);
+						((Method) mhparams.method).invoke(mhparams.thisObject, Color.TRANSPARENT);	
 					}
 				}
 			}
@@ -56,12 +58,12 @@ public class ModSDK21
 	
 	public static void afterOnPostCreateSDK21(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 		Class<?> internalStyleable = findClass("com.android.internal.R.styleable", null);
-		int[] internalTheme = (int[]) getStaticObjectField(internalStyleable, "Theme");
+		int[] internalTheme = $(getStaticObjectField(internalStyleable, "Theme"));
 		int internalColorPrimary = getStaticIntField(internalStyleable, "Theme_colorPrimaryDark");
 		
-		SwipeBackActivityHelper helper = (SwipeBackActivityHelper) getAdditionalInstanceField(mhparams.thisObject, "helper");
+		SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 		if (helper != null) {
-			final Activity activity = (Activity) mhparams.thisObject;
+			final Activity activity = $(mhparams.thisObject);
 
 			String packageName = activity.getApplicationInfo().packageName;
 			String className = activity.getClass().getName();
@@ -70,7 +72,7 @@ public class ModSDK21
 			if (!mSettings.getBoolean(packageName, className, Settings.LOLLIPOP_HACK, false))
 				return;
 			
-			ViewGroup root = (ViewGroup) helper.getSwipeBackLayout().getChildAt(0);
+			ViewGroup root = $(helper.getSwipeBackLayout().getChildAt(0));
 			View content = root.getChildAt(0);
 			final WindowInsetsColorDrawable bkg = new WindowInsetsColorDrawable(content.getBackground());
 			content.setBackground(bkg);
