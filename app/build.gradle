@@ -23,4 +23,5 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:+'
     compile files('libs/XposedBridgeApi.jar')
     compile project(':libraries:SwipeBackLayout')
+    compile project(':libraries:discreteSeekBar')
 }

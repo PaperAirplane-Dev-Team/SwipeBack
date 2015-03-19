@@ -1,1 +1,1 @@
-include ':app', ':libraries:SwipeBackLayout'
+include ':app', ':libraries:SwipeBackLayout', ':libraries:discreteSeekBar'

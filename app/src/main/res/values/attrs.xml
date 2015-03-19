@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="DiscreteSeekBarPreference">
+		<attr name="dsbp_min" format="integer"/>
+		<attr name="dsbp_max" format="integer"/>
+	</declare-styleable>
+</resources>

@@ -76,6 +76,10 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				mSettings.reload();
 				int edge = mSettings.getInt(packageName, className, Settings.EDGE, SwipeBackLayout.EDGE_LEFT);
 				helper.getSwipeBackLayout().setEdgeTrackingEnabled(edge);
+				
+				int sensitivity = mSettings.getInt(packageName, className, Settings.SENSITIVITY, 100);
+				helper.getSwipeBackLayout().setSensitivity(activity, (float) sensitivity / 100.0f);
+				
 				setAdditionalInstanceField(activity, "helper", helper);
 				
 				if (Build.VERSION.SDK_INT >= 21)

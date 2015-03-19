@@ -14,6 +14,7 @@ import java.util.Set;
 import info.papdt.swipeback.R;
 import info.papdt.swipeback.helper.Settings;
 import info.papdt.swipeback.ui.base.BasePreferenceFragment;
+import info.papdt.swipeback.ui.preference.DiscreteSeekBarPreference;
 import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
 public class SettingsFragment extends BasePreferenceFragment
@@ -26,6 +27,7 @@ public class SettingsFragment extends BasePreferenceFragment
 	
 	private SwitchPreference mEnable;
 	private MultiSelectListPreference mEdge;
+	private DiscreteSeekBarPreference mSensitivity;
 	private CheckBoxPreference mLollipop;
 	
 	private String mPackageName, mClassName;
@@ -43,6 +45,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		// Obtain preferences
 		mEnable = $(this, Settings.ENABLE);
 		mEdge = $(this, Settings.EDGE);
+		mSensitivity = $(this, Settings.SENSITIVITY);
 		mLollipop = $(this, Settings.LOLLIPOP_HACK);
 		
 		// Default values
@@ -50,6 +53,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		Set<String> edges = parseEdgePref(getInt(Settings.EDGE, SwipeBackLayout.EDGE_LEFT));
 		mEdge.setValues(edges);
 		mEdge.setSummary(buildEdgeText(edges));
+		mSensitivity.setValue(getInt(Settings.SENSITIVITY, 100));
 		
 		if (Build.VERSION.SDK_INT >= 21) {
 			mLollipop.setEnabled(true);
@@ -57,7 +61,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		}
 		
 		// Bind
-		$$(mEnable, mEdge, mLollipop);
+		$$(mEnable, mEdge, mSensitivity, mLollipop);
 	}
 
 	@Override
@@ -69,6 +73,9 @@ public class SettingsFragment extends BasePreferenceFragment
 			Set<String> values = (Set<String>) newValue;
 			putInt(Settings.EDGE, buildEdgePref(values));
 			mEdge.setSummary(buildEdgeText(values));
+			return true;
+		} else if (preference == mSensitivity) {
+			putInt(Settings.SENSITIVITY, Integer.valueOf(newValue));
 			return true;
 		} else if (preference == mLollipop) {
 			putBoolean(Settings.LOLLIPOP_HACK, Boolean.valueOf(newValue));

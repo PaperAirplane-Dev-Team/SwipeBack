@@ -16,6 +16,7 @@ public abstract class Settings
 	public static final String GLOBAL = "global";
 	public static final String ENABLE = "enable";
 	public static final String EDGE = "edge";
+	public static final String SENSITIVITY = "sensitivity";
 	public static final String LOLLIPOP_HACK = "lollipop_hack";
 	
 	private static XSettings sXSettings;

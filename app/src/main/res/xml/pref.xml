@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 	
 	<SwitchPreference
 		android:key="enable"
@@ -13,6 +14,13 @@
 		android:dependency="enable"
 		android:entries="@array/edge_list"
 		android:entryValues="@array/edge_values"/>
+	
+	<info.papdt.swipeback.ui.preference.DiscreteSeekBarPreference
+		android:key="sensitivity"
+		android:title="@string/sensitivity"
+		android:dependency="enable"
+		app:dsbp_min="1"
+		app:dsbp_max="100"/>
 	
 	<PreferenceCategory
 		android:title="@string/experimental">
