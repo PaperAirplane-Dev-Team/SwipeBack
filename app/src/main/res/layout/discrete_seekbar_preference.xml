@@ -2,7 +2,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
+	android:layout_height="wrap_content"
 	android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
 	android:paddingRight="?android:attr/listPreferredItemPaddingRight"
 	android:background="?android:attr/activatedBackgroundIndicator">
@@ -36,6 +36,8 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@android:id/summary"
 		android:layout_marginTop="4dp"
+		android:paddingTop="2dp"
+		android:paddingBottom="2dp"
 		app:dsb_min="0"
 		app:dsb_max="100"/>
 	
