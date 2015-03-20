@@ -112,9 +112,10 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			}
 		});
 		
-		if (Build.VERSION.SDK_INT >= 21) {
-			ModSDK21.zygoteSDK21();
-		}
+		if (Build.VERSION.SDK_INT < 21)
+			return;
+			
+		ModSDK21.zygoteSDK21();
 	}
 	
 	private void hookActivityRecord(Class<?> clazz) throws Throwable {
