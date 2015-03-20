@@ -17,6 +17,7 @@ public class DiscreteSeekBarPreference extends Preference implements DiscreteSee
 {
 	
 	private int mMin = 0, mMax = 1, mValue = 0, mTmp = Integer.MIN_VALUE;
+	private String mFormat;
 	private DiscreteSeekBar mSeekbar;
 	
 	public DiscreteSeekBarPreference(Context context) {
@@ -34,8 +35,13 @@ public class DiscreteSeekBarPreference extends Preference implements DiscreteSee
 			TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DiscreteSeekBarPreference);
 			mMax = a.getInt(R.styleable.DiscreteSeekBarPreference_dsbp_max, 1);
 			mMin = a.getInt(R.styleable.DiscreteSeekBarPreference_dsbp_min, 0);
+			mFormat = a.getString(R.styleable.DiscreteSeekBarPreference_dsbp_format);
 			mValue = mMin;
 			a.recycle();
+			
+			if (mFormat == null || mFormat.trim().equals("")) {
+				mFormat = "%d";
+			}
 		}
 	}
 
@@ -51,6 +57,7 @@ public class DiscreteSeekBarPreference extends Preference implements DiscreteSee
 		mSeekbar = $(view, R.id.dsbp_seek);
 		mSeekbar.setMin(mMin);
 		mSeekbar.setMax(mMax);
+		mSeekbar.setIndicatorFormatter(mFormat);
 		mSeekbar.setProgress(mValue);
 		mSeekbar.setOnProgressChangeListener(this);
 	}

@@ -20,7 +20,8 @@
 		android:title="@string/sensitivity"
 		android:dependency="enable"
 		app:dsbp_min="1"
-		app:dsbp_max="100"/>
+		app:dsbp_max="100"
+		app:dsbp_format="%d%%"/>
 	
 	<PreferenceCategory
 		android:title="@string/experimental">
