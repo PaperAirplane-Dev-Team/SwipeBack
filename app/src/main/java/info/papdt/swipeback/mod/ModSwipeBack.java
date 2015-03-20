@@ -112,6 +112,8 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			}
 		});
 		
+		ModKK441.hookKK441();
+		
 		if (Build.VERSION.SDK_INT < 21)
 			return;
 			
