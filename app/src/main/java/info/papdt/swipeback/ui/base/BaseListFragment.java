@@ -60,22 +60,38 @@ public abstract class BaseListFragment<T> extends BaseFragment
 	}
 	
 	protected abstract BaseAdapter buildAdapter();
-	protected abstract List<T> loadData();
+	protected abstract List<T> loadData(ProgressCallback callback);
 	
-	private class LoadDataTask extends AsyncTask<Void, Void, List<T>> {
+	protected interface ProgressCallback {
+		void updateProgress(int progress, int max);
+	}
+	
+	private class LoadDataTask extends AsyncTask<Void, Integer, List<T>> {
 		private ProgressDialog prog;
 		
 		@Override
 		protected void onPreExecute() {
 			prog = new ProgressDialog(getActivity());
 			prog.setMessage(getString(R.string.plz_wait));
+			prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			prog.setCancelable(false);
 			prog.show();
 		}
 
 		@Override
 		protected List<T> doInBackground(Void... params) {
-			return loadData();
+			return loadData(new ProgressCallback() {
+				@Override
+				public void updateProgress(int progress, int max) {
+					publishProgress(progress, max);
+				}
+			});
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			prog.setMax(values[1]);
+			prog.setProgress(values[0]);
 		}
 
 		@Override

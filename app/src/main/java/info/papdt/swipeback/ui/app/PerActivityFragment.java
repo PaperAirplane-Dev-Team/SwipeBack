@@ -27,7 +27,7 @@ public class PerActivityFragment extends BaseListFragment<ActivityModel>
 	}
 
 	@Override
-	protected List<ActivityModel> loadData() {
+	protected List<ActivityModel> loadData(ProgressCallback callback) {
 		List<ActivityModel> list = new ArrayList<ActivityModel>();
 		PackageManager pm = getActivity().getPackageManager();
 		
@@ -54,6 +54,7 @@ public class PerActivityFragment extends BaseListFragment<ActivityModel>
 				activity.className = info.name;
 				activity.title = info.loadLabel(pm).toString();
 				list.add(activity);
+				callback.updateProgress(list.size() - 1, ai.length);
 			}
 		}
 		

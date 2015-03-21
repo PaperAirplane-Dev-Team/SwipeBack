@@ -43,7 +43,7 @@ public class PerAppFragment extends BaseListFragment<AppModel>
 	}
 
 	@Override
-	protected List<AppModel> loadData() {
+	protected List<AppModel> loadData(ProgressCallback callback) {
 		List<AppModel> list = new ArrayList<AppModel>();
 		PackageManager pm = getActivity().getPackageManager();
 		List<ApplicationInfo> la = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -54,6 +54,7 @@ public class PerAppFragment extends BaseListFragment<AppModel>
 			app.title = pm.getApplicationLabel(info).toString();
 			app.icon = pm.getApplicationIcon(info);
 			list.add(app);
+			callback.updateProgress(list.size(), la.size());
 		}
 		
 		Collections.sort(list, new Comparator<AppModel>() {
