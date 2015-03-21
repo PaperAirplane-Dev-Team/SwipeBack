@@ -137,7 +137,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		mPackageName = str[0];
 		mClassName = str[1];
 		
-		if (str[2].startsWith("Global")) {
+		if (str[2].equals(getString(R.string.global))) {
 			str[2] = getString(R.string.global_short);
 		}
 		
