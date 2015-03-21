@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import info.papdt.swipeback.R;
 import info.papdt.swipeback.ui.adapter.ActivityAdapter;
@@ -14,21 +15,20 @@ import info.papdt.swipeback.ui.base.BaseListFragment;
 import info.papdt.swipeback.ui.base.GlobalActivity;
 import info.papdt.swipeback.ui.model.ActivityModel;
 
-public class PerActivityFragment extends BaseListFragment
+public class PerActivityFragment extends BaseListFragment<ActivityModel>
 {
-	private ArrayList<ActivityModel> mActivityList = new ArrayList<ActivityModel>();
 	private BaseAdapter mAdapter;
 	private String mTitle = "";
 
 	@Override
 	protected BaseAdapter buildAdapter() {
-		mAdapter = new ActivityAdapter(getActivity(), mActivityList);
+		mAdapter = new ActivityAdapter(getActivity(), getItemList());
 		return mAdapter;
 	}
 
 	@Override
-	protected void loadData() {
-		mActivityList.clear();
+	protected List<ActivityModel> loadData() {
+		List<ActivityModel> list = new ArrayList<ActivityModel>();
 		PackageManager pm = getActivity().getPackageManager();
 		
 		ActivityInfo[] ai;
@@ -46,30 +46,33 @@ public class PerActivityFragment extends BaseListFragment
 		ActivityModel global = new ActivityModel();
 		global.className = "global";
 		global.title = getString(R.string.global);
-		mActivityList.add(global);
+		list.add(global);
 		
 		if (ai != null) {
 			for (ActivityInfo info : ai) {
 				ActivityModel activity = new ActivityModel();
 				activity.className = info.name;
 				activity.title = info.loadLabel(pm).toString();
-				mActivityList.add(activity);
+				list.add(activity);
 			}
+		}
+		
+		return list;
+	}
+
+	@Override
+	protected void onDataLoaded(List<ActivityModel> data) {
+		super.onDataLoaded(data);
+		if (!mTitle.equals("")) {
+			showHomeAsUp();
+			setTitle(mTitle + " - " + getString(R.string.app_name));
 		}
 		
 		// If size is smaller than 2, which means the app has only one or no activity
 		// Then we can skip this fragment and go to settings directly
-		if (mActivityList.size() <= 2) {
+		if (data.size() <= 2) {
 			onItemClick(0);
 			getActivity().finish();
-		}
-	}
-
-	@Override
-	protected void onDataLoaded() {
-		if (!mTitle.equals("")) {
-			showHomeAsUp();
-			setTitle(mTitle + " - " + getString(R.string.app_name));
 		}
 	}
 
@@ -80,7 +83,7 @@ public class PerActivityFragment extends BaseListFragment
 		i.setClass(getActivity(), GlobalActivity.class);
 		i.putExtra("fragment", "settings");
 		
-		ActivityModel activity = mActivityList.get(pos);
+		ActivityModel activity = getItemList().get(pos);
 		
 		i.putExtra("pass", getExtraPass() + "," + activity.className + "," + activity.title + "," + mTitle);
 		startActivity(i);

@@ -25,10 +25,9 @@ import info.papdt.swipeback.ui.base.GlobalActivity;
 import info.papdt.swipeback.ui.model.AppModel;
 import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
-public class PerAppFragment extends BaseListFragment
+public class PerAppFragment extends BaseListFragment<AppModel>
 {
 	private AppAdapter mAdapter;
-	private ArrayList<AppModel> mAppList = new ArrayList<AppModel>();
 	private MenuItem mSearchItem;
 
 	@Override
@@ -39,13 +38,13 @@ public class PerAppFragment extends BaseListFragment
 
 	@Override
 	protected BaseAdapter buildAdapter() {
-		mAdapter = new AppAdapter(getActivity(), mAppList);
+		mAdapter = new AppAdapter(getActivity(), getItemList());
 		return mAdapter;
 	}
 
 	@Override
-	protected void loadData() {
-		mAppList.clear();
+	protected List<AppModel> loadData() {
+		List<AppModel> list = new ArrayList<AppModel>();
 		PackageManager pm = getActivity().getPackageManager();
 		List<ApplicationInfo> la = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		
@@ -54,10 +53,10 @@ public class PerAppFragment extends BaseListFragment
 			app.packageName = info.packageName;
 			app.title = pm.getApplicationLabel(info).toString();
 			app.icon = pm.getApplicationIcon(info);
-			mAppList.add(app);
+			list.add(app);
 		}
 		
-		Collections.sort(mAppList, new Comparator<AppModel>() {
+		Collections.sort(list, new Comparator<AppModel>() {
 			@Override
 			public int compare(AppModel p1, AppModel p2) {
 				return Collator.getInstance().compare(p1.title, p2.title);
@@ -69,7 +68,9 @@ public class PerAppFragment extends BaseListFragment
 		global.packageName = "global";
 		global.title = getString(R.string.global);
 		global.icon = null;
-		mAppList.add(0, global);
+		list.add(0, global);
+		
+		return list;
 	}
 
 	@Override

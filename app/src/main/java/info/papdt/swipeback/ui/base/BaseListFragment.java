@@ -8,12 +8,16 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import info.papdt.swipeback.R;
 import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
-public abstract class BaseListFragment extends BaseFragment 
+public abstract class BaseListFragment<T> extends BaseFragment 
 {
 	private ListView mList;
+	private List<T> mItemList = new ArrayList<T>();
 
 	@Override
 	protected void onFinishInflate(View view) {
@@ -42,18 +46,23 @@ public abstract class BaseListFragment extends BaseFragment
 		return mList;
 	}
 	
+	protected List<T> getItemList() {
+		return mItemList;
+	}
+	
 	protected void onItemClick(int pos) {
 		
 	}
 	
-	protected void onDataLoaded() {
-		
+	protected void onDataLoaded(List<T> data) {
+		mItemList.clear();
+		mItemList.addAll(data);
 	}
 	
 	protected abstract BaseAdapter buildAdapter();
-	protected abstract void loadData();
+	protected abstract List<T> loadData();
 	
-	private class LoadDataTask extends AsyncTask<Void, Void, Void> {
+	private class LoadDataTask extends AsyncTask<Void, Void, List<T>> {
 		private ProgressDialog prog;
 		
 		@Override
@@ -65,16 +74,15 @@ public abstract class BaseListFragment extends BaseFragment
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
-			loadData();
-			return null;
+		protected List<T> doInBackground(Void... params) {
+			return loadData();
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(List<T> result) {
 			prog.dismiss();
+			onDataLoaded(result);
 			((BaseAdapter) mList.getAdapter()).notifyDataSetChanged();
-			onDataLoaded();
 		}
 		
 	}
