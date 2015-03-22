@@ -1,6 +1,5 @@
 package info.papdt.swipeback.ui.app;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -76,12 +75,7 @@ public class PerAppFragment extends BaseListFragment<AppModel>
 
 	@Override
 	protected void onItemClick(int pos) {
-		Intent i = new Intent();
-		i.setAction(Intent.ACTION_MAIN);
-		i.setClass(getActivity(), GlobalActivity.class);
-		i.putExtra("fragment", "peract");
-		i.putExtra("pass", mAdapter.getItem(pos).packageName);
-		startActivity(i);
+		startFragment("peract", mAdapter.getItem(pos).packageName);
 	}
 
 	@Override
@@ -121,6 +115,17 @@ public class PerAppFragment extends BaseListFragment<AppModel>
 				return true;
 			}
 		});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.about:
+				startFragment("about");
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	@Override

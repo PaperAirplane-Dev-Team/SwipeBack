@@ -26,7 +26,6 @@
 		android:layout_marginTop="4dp"
 		android:ellipsize="marquee"
 		android:fadingEdge="vertical"
-		android:maxLines="4"
 		android:textAppearance="?android:attr/textAppearanceListItemSecondary"
 		android:textColor="?android:attr/textColorSecondary"/>
     

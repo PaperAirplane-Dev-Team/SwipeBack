@@ -1,6 +1,5 @@
 package info.papdt.swipeback.ui.app;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -79,15 +78,8 @@ public class PerActivityFragment extends BaseListFragment<ActivityModel>
 
 	@Override
 	protected void onItemClick(int pos) {
-		Intent i = new Intent();
-		i.setAction(Intent.ACTION_MAIN);
-		i.setClass(getActivity(), GlobalActivity.class);
-		i.putExtra("fragment", "settings");
-		
 		ActivityModel activity = getItemList().get(pos);
-		
-		i.putExtra("pass", getExtraPass() + "," + activity.className + "," + activity.title + "," + mTitle);
-		startActivity(i);
+		startFragment("settings", getExtraPass() + "," + activity.className + "," + activity.title + "," + mTitle);
 	}
 
 }

@@ -1,5 +1,6 @@
 package info.papdt.swipeback.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -51,6 +52,23 @@ public abstract class BasePreferenceFragment extends PreferenceFragment implemen
 			preference.setOnPreferenceClickListener(this);
 			preference.setOnPreferenceChangeListener(this);
 		}
+	}
+	
+	protected void startFragment(String name) {
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_MAIN);
+		i.setClass(getActivity(), GlobalActivity.class);
+		i.putExtra("fragment", name);
+		startActivity(i);
+	}
+
+	protected void startFragment(String name, String pass) {
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_MAIN);
+		i.setClass(getActivity(), GlobalActivity.class);
+		i.putExtra("fragment", name);
+		i.putExtra("pass", pass);
+		startActivity(i);
 	}
 	
 	protected abstract int getPreferenceXml();

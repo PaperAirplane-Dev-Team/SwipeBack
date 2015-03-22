@@ -26,6 +26,20 @@
 		<item>2</item>
 	</string-array>
 	
+	<!-- About -->
+	<string name="about">About</string>
+	<string name="version">Version</string>
+	<string name="made_by">Made by</string>
+	<string name="made_by_desc">PaperAirplane Dev Team</string>
+	<string name="maintainer">Maintainer</string>
+	<string name="maintainer_desc">Peter Cai (XDA @PeterCxy)</string>
+	<string name="source_code">Source Code</string>
+	<string name="source_code_uri">https://github.com/PaperAirplane-Dev-Team/SwipeBack</string>
+	<string name="license">Open-source License</string>
+	<string name="license_desc">Obtain the open-source license of SwipeBack and the open-source libraries that is used. Huge thanks to those developers of open-source libraries. Without their great works, SwipeBack cannot be what it is today.</string>
+	<string name="donation">Donate</string>
+	<string name="donation_desc">PaperAirplane Dev Team is a non-profit dev team made up of mostly students. We have devoted our time to develop this module. If you like this module and feel like donating to us, swipe below to select a donation amount and open donation page.</string>
+	
 	<!-- Messages -->
 	<string name="search">Search</string>
 	<string name="plz_wait">Please wait...</string>

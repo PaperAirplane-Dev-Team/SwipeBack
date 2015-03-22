@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 import info.papdt.swipeback.R;
+import info.papdt.swipeback.ui.app.AboutFragment;
 import info.papdt.swipeback.ui.app.PerActivityFragment;
 import info.papdt.swipeback.ui.app.PerAppFragment;
 import info.papdt.swipeback.ui.app.SettingsFragment;
@@ -51,6 +52,9 @@ public class GlobalActivity extends ActionBarActivity
 				break;
 			case "settings":
 				clazz = SettingsFragment.class;
+				break;
+			case "about":
+				clazz = AboutFragment.class;
 				break;
 			default:
 				clazz = PerAppFragment.class;

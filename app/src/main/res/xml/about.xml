@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+	
+	<Preference
+		android:key="version"
+		android:title="@string/version"/>
+	
+	<Preference
+		android:key="made_by"
+		android:title="@string/made_by"
+		android:summary="@string/made_by_desc"/>
+	
+	<Preference
+		android:key="maintainer"
+		android:title="@string/maintainer"
+		android:summary="@string/maintainer_desc"/>
+	
+	<info.papdt.swipeback.ui.preference.DiscreteSeekBarPreference
+		android:key="donation"
+		android:title="@string/donation"
+		android:summary="@string/donation_desc"
+		app:dsbp_min="1"
+		app:dsbp_max="20"
+		app:dsbp_format="$%d"/>
+	
+	<Preference
+		android:key="source_code"
+		android:title="@string/source_code"
+		android:summary="@string/source_code_uri"/>
+	
+	<Preference
+		android:key="license"
+		android:title="@string/license"
+		android:summary="@string/license_desc"/>
+	
+</PreferenceScreen>
