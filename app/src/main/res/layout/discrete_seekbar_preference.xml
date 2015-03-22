@@ -5,7 +5,12 @@
 	android:layout_height="wrap_content"
 	android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
 	android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-	android:background="?android:attr/activatedBackgroundIndicator">
+	android:minHeight="?android:attr/listPreferredItemHeight"
+	android:paddingTop="16dp"
+	android:paddingBottom="16dp"
+	android:background="?android:attr/selectableItemBackground"
+	android:clickable="true"
+	android:clipToPadding="false">
 	
 	<TextView
 		android:id="@android:id/title"
