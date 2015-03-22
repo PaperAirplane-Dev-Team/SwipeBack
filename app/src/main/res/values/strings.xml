@@ -13,6 +13,8 @@
 	<string name="experimental">Experimental</string>
 	<string name="lollipop_hack">Lollipop hacks (SDK >= 21)</string>
 	<string name="lollipop_hack_desc">Hacks specified for Lollipop and above. This includes optimizations for Lollipop, for example, this makes the status bar (if colored) look better while swiping.\nMay cause layout issues in some apps.\nIt is NOT recommended to enable this globally.</string>
+	<string name="scroll_to_return">Scroll-to-return animation</string>
+	<string name="scroll_to_return_desc">Override the system returning animation with a scroll-to-return animation the way the swipe gesture does. Might cause conflicts with some apps.</string>
 	<string-array name="edge_list">
 		<item>Left</item>
 		<item>Right</item>

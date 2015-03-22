@@ -10,6 +10,7 @@ import me.imid.swipebacklayout.lib.SwipeBackLayout;
 
 public class MySwipeBackHelper extends SwipeBackActivityHelper
 {
+	private boolean hasSetBackground = false;
 	
 	public MySwipeBackHelper(Activity activity) {
 		super(activity);
@@ -31,7 +32,7 @@ public class MySwipeBackHelper extends SwipeBackActivityHelper
 
 			@Override
 			public void onEdgeTouch(int edgeFlag) {
-				mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+				setBackground();
 			}
 
 			@Override
@@ -41,12 +42,23 @@ public class MySwipeBackHelper extends SwipeBackActivityHelper
 		});
 	}
 	
+	public void onFinish() {
+		setBackground();
+	}
+	
 	@Override
 	protected Context getGlobalContext() {
 		try {
 			return mActivity.createPackageContext("info.papdt.swipeback", Context.CONTEXT_IGNORE_SECURITY);
 		} catch (Exception e) {
 			return super.getGlobalContext();
+		}
+	}
+	
+	private void setBackground() {
+		if (!hasSetBackground) {
+			mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+			hasSetBackground = true;
 		}
 	}
 }

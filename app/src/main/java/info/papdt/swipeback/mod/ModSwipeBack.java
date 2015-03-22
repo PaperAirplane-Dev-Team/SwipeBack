@@ -11,6 +11,7 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import static de.robv.android.xposed.XposedHelpers.*;
 
@@ -107,6 +108,32 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 					SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 					if (helper != null) {
 						mhparams.setResult(helper.findViewById((int) mhparams.args[0]));
+					}
+				}
+			}
+		});
+		
+		findAndHookMethod(Activity.class, "finish", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+				MySwipeBackHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
+				if (helper != null) {
+					Activity activity = $(mhparams.thisObject);
+					String packageName = activity.getApplicationInfo().packageName;
+					String className = activity.getClass().getName();
+					
+					mSettings.reload();
+					if (!mSettings.getBoolean(packageName, className, Settings.SCROLL_TO_RETURN, false))
+						return;
+					
+					helper.onFinish();
+					Object isFinishing = getAdditionalInstanceField(mhparams.thisObject, "isFinishing");
+					
+					// Replace the default 'finish' by scrollToFinish
+					if (isFinishing == null || !Boolean.valueOf(isFinishing)) {
+						setAdditionalInstanceField(mhparams.thisObject, "isFinishing", true);
+						mhparams.setResult(null);
+						helper.getSwipeBackLayout().scrollToFinishActivity();
 					}
 				}
 			}

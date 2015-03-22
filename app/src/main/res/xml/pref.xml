@@ -34,6 +34,13 @@
 			android:enabled="false"
 			android:dependency="enable"/>
 		
+		<CheckBoxPreference
+			android:key="scroll_to_return"
+			android:title="@string/scroll_to_return"
+			android:summary="@string/scroll_to_return_desc"
+			android:checked="false"
+			android:dependency="enable"/>
+		
 	</PreferenceCategory>
 	
 </PreferenceScreen>

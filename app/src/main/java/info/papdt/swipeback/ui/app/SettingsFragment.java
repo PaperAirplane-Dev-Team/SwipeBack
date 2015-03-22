@@ -28,7 +28,7 @@ public class SettingsFragment extends BasePreferenceFragment
 	private SwitchPreference mEnable;
 	private MultiSelectListPreference mEdge;
 	private DiscreteSeekBarPreference mSensitivity;
-	private CheckBoxPreference mLollipop;
+	private CheckBoxPreference mLollipop, mScrollToReturn;
 	
 	private String mPackageName, mClassName;
 
@@ -47,6 +47,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		mEdge = $(this, Settings.EDGE);
 		mSensitivity = $(this, Settings.SENSITIVITY);
 		mLollipop = $(this, Settings.LOLLIPOP_HACK);
+		mScrollToReturn = $(this, Settings.SCROLL_TO_RETURN);
 		
 		// Default values
 		mEnable.setChecked(getBoolean(Settings.ENABLE, true));
@@ -54,6 +55,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		mEdge.setValues(edges);
 		mEdge.setSummary(buildEdgeText(edges));
 		mSensitivity.setValue(getInt(Settings.SENSITIVITY, 100));
+		mScrollToReturn.setChecked(getBoolean(Settings.SCROLL_TO_RETURN, false));
 		
 		if (Build.VERSION.SDK_INT >= 21) {
 			mLollipop.setEnabled(true);
@@ -61,7 +63,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		}
 		
 		// Bind
-		$$(mEnable, mEdge, mSensitivity, mLollipop);
+		$$(mEnable, mEdge, mSensitivity, mLollipop, mScrollToReturn);
 	}
 
 	@Override
@@ -79,6 +81,9 @@ public class SettingsFragment extends BasePreferenceFragment
 			return true;
 		} else if (preference == mLollipop) {
 			putBoolean(Settings.LOLLIPOP_HACK, Boolean.valueOf(newValue));
+			return true;
+		} else if (preference == mScrollToReturn) {
+			putBoolean(Settings.SCROLL_TO_RETURN, Boolean.valueOf(newValue));
 			return true;
 		} else {
 			return false;

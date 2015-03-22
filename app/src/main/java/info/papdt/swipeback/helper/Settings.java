@@ -18,6 +18,7 @@ public abstract class Settings
 	public static final String EDGE = "edge";
 	public static final String SENSITIVITY = "sensitivity";
 	public static final String LOLLIPOP_HACK = "lollipop_hack";
+	public static final String SCROLL_TO_RETURN = "scroll_to_return";
 	
 	private static XSettings sXSettings;
 	private static AppSettings sAppSettings;
