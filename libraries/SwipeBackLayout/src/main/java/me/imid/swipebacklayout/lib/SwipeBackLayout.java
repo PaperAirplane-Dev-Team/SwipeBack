@@ -260,7 +260,7 @@ public class SwipeBackLayout extends FrameLayout {
 
     public float getScrollPercent() {
         return mScrollPercent;
-	}
+    }
 
     public static interface SwipeListener {
         /**
