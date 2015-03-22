@@ -117,7 +117,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			@Override
 			protected void beforeHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				MySwipeBackHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
-				if (helper != null) {
+				if (helper != null && helper.getSwipeBackLayout().getScrollPercent() < 1) {
 					Activity activity = $(mhparams.thisObject);
 					String packageName = activity.getApplicationInfo().packageName;
 					String className = activity.getClass().getName();

@@ -258,6 +258,10 @@ public class SwipeBackLayout extends FrameLayout {
         mListeners.remove(listener);
     }
 
+    public float getScrollPercent() {
+        return mScrollPercent;
+	}
+
     public static interface SwipeListener {
         /**
          * Invoke when state change
