@@ -1,5 +1,7 @@
 package info.papdt.swipeback.ui.app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.preference.Preference;
@@ -11,6 +13,8 @@ import static info.papdt.swipeback.ui.utils.UiUtility.*;
 
 public class AboutFragment extends BasePreferenceFragment
 {
+	private static final String DONATION_URI = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=xqsx43cxy@126.com&lc=US&amount=%d&item_name=SwipeBack+Donation&no_note=1&no_shipping=1&currency_code=USD";
+	
 	private static final String VERSION = "version";
 	private static final String MADE_BY = "made_by";
 	private static final String SOURCE_CODE = "source_code";
@@ -66,6 +70,34 @@ public class AboutFragment extends BasePreferenceFragment
 			return true;
 		} else {
 			return super.onPreferenceClick(pref);
+		}
+	}
+
+	@Override
+	public boolean onPreferenceChange(Preference preference, Object newValue) {
+		if (preference == mDonation) {
+			final int amount = Integer.valueOf(newValue);
+			new AlertDialog.Builder(getActivity())
+				.setMessage(String.format(getString(R.string.ask_donate), amount))
+				.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface p1, int p2) {
+						
+					}
+				})
+				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int id) {
+						Intent i = new Intent(Intent.ACTION_VIEW);
+						i.setData(Uri.parse(String.format(DONATION_URI, amount)));
+						startActivity(i);
+					}
+				})
+				.create()
+				.show();
+			return true;
+		} else {
+			return super.onPreferenceChange(preference, newValue);
 		}
 	}
 }

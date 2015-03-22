@@ -43,5 +43,6 @@
 	<!-- Messages -->
 	<string name="search">Search</string>
 	<string name="plz_wait">Please wait...</string>
+	<string name="ask_donate">Would you like to donate $%d to us?</string>
 
 </resources>
