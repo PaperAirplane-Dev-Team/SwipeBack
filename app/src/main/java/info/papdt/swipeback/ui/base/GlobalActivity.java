@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 
 import info.papdt.swipeback.R;
 import info.papdt.swipeback.ui.app.AboutFragment;
+import info.papdt.swipeback.ui.app.LicenseFragment;
 import info.papdt.swipeback.ui.app.PerActivityFragment;
 import info.papdt.swipeback.ui.app.PerAppFragment;
 import info.papdt.swipeback.ui.app.SettingsFragment;
@@ -55,6 +56,9 @@ public class GlobalActivity extends ActionBarActivity
 				break;
 			case "about":
 				clazz = AboutFragment.class;
+				break;
+			case "license":
+				clazz = LicenseFragment.class;
 				break;
 			default:
 				clazz = PerAppFragment.class;

@@ -66,7 +66,7 @@ public class AboutFragment extends BasePreferenceFragment
 			startActivity(i);
 			return true;
 		} else if (pref == mLicense) {
-			// TODO
+			startFragment("license");
 			return true;
 		} else {
 			return super.onPreferenceClick(pref);
