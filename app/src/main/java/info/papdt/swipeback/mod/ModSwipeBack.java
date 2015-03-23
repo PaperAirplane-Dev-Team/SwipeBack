@@ -93,6 +93,14 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 				SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 				if (helper != null) {
+					Activity activity = $(mhparams.thisObject);
+
+					int isFloating = getStaticIntField(findClass("com.android.internal.R.styleable", null), "Window_windowIsFloating");
+					if (activity.getWindow().getWindowStyle().getBoolean(isFloating, false)) {
+						setAdditionalInstanceField(mhparams.thisObject, "helper", null);
+						return;
+					}
+					
 					helper.onPostCreate();
 					
 					if (Build.VERSION.SDK_INT == 21)
