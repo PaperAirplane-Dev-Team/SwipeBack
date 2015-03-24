@@ -180,7 +180,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 	}
 
 	private boolean shouldExclude(String packageName, String className) {
-		if (packageName.equals("com.android.systemui")) {
+		if (packageName.equals("com.android.systemui") || className.contains("InCall")) {
 			return true;
 		} else {
 			mSettings.reload();
