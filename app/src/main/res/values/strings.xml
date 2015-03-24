@@ -7,6 +7,8 @@
 	<!-- Per-app -->
 	<string name="global">Global (Overriden by specific settings)</string>
 	<string name="global_short">Global</string>
+	<string name="reset">Reset</string>
+	<string name="reset_confirm">Really want to reset these settings to default?</string>
 	<string name="enable">Enable SwipeBack</string>
 	<string name="edge">Trigger Edge</string>
 	<string name="sensitivity">Sensitivity</string>

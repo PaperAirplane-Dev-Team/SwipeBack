@@ -1,10 +1,15 @@
 package info.papdt.swipeback.ui.app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.preference.CheckBoxPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.SwitchPreference;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 
@@ -40,6 +45,7 @@ public class SettingsFragment extends BasePreferenceFragment
 	@Override
 	protected void onPreferenceLoaded() {
 		initPackage();
+		setHasOptionsMenu(true);
 		mSettings = Settings.getInstance(getActivity());
 		
 		// Obtain preferences
@@ -50,17 +56,7 @@ public class SettingsFragment extends BasePreferenceFragment
 		mScrollToReturn = $(this, Settings.SCROLL_TO_RETURN);
 		
 		// Default values
-		mEnable.setChecked(getBoolean(Settings.ENABLE, true));
-		Set<String> edges = parseEdgePref(getInt(Settings.EDGE, SwipeBackLayout.EDGE_LEFT));
-		mEdge.setValues(edges);
-		mEdge.setSummary(buildEdgeText(edges));
-		mSensitivity.setValue(getInt(Settings.SENSITIVITY, 100));
-		mScrollToReturn.setChecked(getBoolean(Settings.SCROLL_TO_RETURN, false));
-		
-		if (Build.VERSION.SDK_INT >= 21) {
-			mLollipop.setEnabled(true);
-			mLollipop.setChecked(getBoolean(Settings.LOLLIPOP_HACK, false));
-		}
+		reload();
 		
 		// Bind
 		$$(mEnable, mEdge, mSensitivity, mLollipop, mScrollToReturn);
@@ -106,6 +102,22 @@ public class SettingsFragment extends BasePreferenceFragment
 		
 		return ret;
 	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.settings, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.reset:
+				doReset();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 	
 	private String buildEdgeText(Set<String> edges) {
 		StringBuilder sb = new StringBuilder();
@@ -148,6 +160,39 @@ public class SettingsFragment extends BasePreferenceFragment
 		
 		setTitle(str[2] + " - " + str[3]);
 		showHomeAsUp();
+	}
+	
+	private void reload() {
+		mEnable.setChecked(getBoolean(Settings.ENABLE, true));
+		Set<String> edges = parseEdgePref(getInt(Settings.EDGE, SwipeBackLayout.EDGE_LEFT));
+		mEdge.setValues(edges);
+		mEdge.setSummary(buildEdgeText(edges));
+		mSensitivity.setValue(getInt(Settings.SENSITIVITY, 100));
+		mScrollToReturn.setChecked(getBoolean(Settings.SCROLL_TO_RETURN, false));
+		
+		if (Build.VERSION.SDK_INT >= 21) {
+			mLollipop.setEnabled(true);
+			mLollipop.setChecked(getBoolean(Settings.LOLLIPOP_HACK, false));
+		}
+	}
+	
+	private void doReset() {
+		new AlertDialog.Builder(getActivity())
+			.setMessage(R.string.reset_confirm)
+			.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int buttonId) {
+					
+				}
+			})
+			.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int buttonId) {
+					mSettings.reset(mPackageName, mClassName);
+					reload();
+				}
+			})
+			.show();
 	}
 	
 	private boolean getBoolean(String key, boolean defValue) {

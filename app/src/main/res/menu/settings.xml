@@ -1,0 +1,11 @@
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<item
+		android:id="@+id/reset"
+		android:title="@string/reset"
+		android:icon="@drawable/ic_settings_backup_restore"
+		app:showAsAction="always"/>
+	
+</menu>

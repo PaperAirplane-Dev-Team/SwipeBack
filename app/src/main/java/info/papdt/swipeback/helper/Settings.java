@@ -20,6 +20,15 @@ public abstract class Settings
 	public static final String LOLLIPOP_HACK = "lollipop_hack";
 	public static final String SCROLL_TO_RETURN = "scroll_to_return";
 	
+	// A list of the existing settings keys. Needed for resetting.
+	private static final String[] KEYS = {
+		ENABLE,
+		EDGE,
+		SENSITIVITY,
+		LOLLIPOP_HACK,
+		SCROLL_TO_RETURN
+	};
+	
 	private static XSettings sXSettings;
 	private static AppSettings sAppSettings;
 	
@@ -41,6 +50,13 @@ public abstract class Settings
 	
 	public void reload() {
 		
+	}
+	
+	// Reset all to default
+	public void reset(String packageName, String className) {
+		for (String key : KEYS) {
+			remove(packageName, className, key);
+		}
 	}
 	
 	public abstract boolean getBoolean(String packageName, String className, String key, boolean defValue);
