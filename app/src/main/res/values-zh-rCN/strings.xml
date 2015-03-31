@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">SwipeBack2</string>
+	<string name="app_desc">全局滑动返回手势</string>
+	
+	<!-- Per-app -->
+	<string name="global">全局（会被具体设置所覆盖）</string>
+	<string name="global_short">全局</string>
+	<string name="reset">重置</string>
+	<string name="reset_confirm">真的要重置这些设置吗？</string>
+	<string name="enable">启用 SwipeBack</string>
+	<string name="edge">触发边缘</string>
+	<string name="sensitivity">灵敏度</string>
+	<string name="experimental">试验性功能</string>
+	<string name="lollipop_hack">Lollipop 优化 (SDK >= 21)</string>
+	<string name="lollipop_hack_desc">对 Lollipop 及以上的系统进行优化（例如使有颜色的状态栏在滑动时少一些违和感）。\n可能在一些程序中引起布局问题。\n请*不要*在全局设置中打开这个选项。</string>
+	<string name="scroll_to_return">滑动返回动画</string>
+	<string name="scroll_to_return_desc">用滑动返回动画覆盖系统内置的返回动画。可能与一些程序冲突。</string>
+	<string-array name="edge_list">
+		<item>左侧</item>
+		<item>右侧</item>
+		<item>底部</item>
+	</string-array>
+	<string-array name="edge_values" translatable="false">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+	
+	<!-- About -->
+	<string name="about">关于</string>
+	<string name="version">版本</string>
+	<string name="made_by">发行者</string>
+	<string name="made_by_desc">PaperAirplane Dev Team（纸飞机开发团队）</string>
+	<string name="maintainer">维护者</string>
+	<string name="maintainer_desc">Peter Cai (XDA @PeterCxy)</string>
+	<string name="source_code">源代码</string>
+	<string name="source_code_uri">https://github.com/PaperAirplane-Dev-Team/SwipeBack</string>
+	<string name="license">开放源代码许可证</string>
+	<string name="license_desc">显示 SwipeBack 和其使用的库所采用的开源许可证。非常感谢这些库的作者，没有他们就不会有 SwipeBack。</string>
+	<string name="donation">捐赠</string>
+	<string name="donation_desc">PaperAirplane Dev Team（纸飞机开发团队）是一个由学生组成的非盈利性团队。我们为此模块的开发付出了自己的精力。如果您喜欢这个模块并想给我们捐赠的话，可以滑动下面的选择器来决定捐赠的金额，捐赠页面将会自动打开。</string>
+	
+	<!-- Messages -->
+	<string name="search">搜索</string>
+	<string name="plz_wait">请稍候……</string>
+	<string name="ask_donate">您想给我们捐赠 $%d 吗？</string>
+
+</resources>
