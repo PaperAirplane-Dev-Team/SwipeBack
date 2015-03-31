@@ -37,11 +37,11 @@ public class AboutFragment extends BasePreferenceFragment
 		mDonation = $(this, DONATION);
 		
 		// Set values
-		String ver = "?";
+		String ver;
 		try {
 			ver = getActivity().getPackageManager().getPackageInfo("info.papdt.swipeback", 0).versionName;
 		} catch (Exception e) {
-			
+			ver = "?";
 		}
 		mVersion.setSummary(ver);
 		
@@ -76,7 +76,7 @@ public class AboutFragment extends BasePreferenceFragment
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		if (preference == mDonation) {
-			final int amount = Integer.valueOf(newValue);
+			final int amount = (Integer) newValue;
 			new AlertDialog.Builder(getActivity())
 				.setMessage(String.format(getString(R.string.ask_donate), amount))
 				.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

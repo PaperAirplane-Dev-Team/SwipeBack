@@ -63,9 +63,10 @@ public class SettingsFragment extends BasePreferenceFragment
 	}
 
 	@Override
+    @SuppressWarnings("unchecked")
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		if (preference == mEnable) {
-			putBoolean(Settings.ENABLE, Boolean.valueOf(newValue));
+			putBoolean(Settings.ENABLE, (Boolean) newValue);
 			return true;
 		} else if (preference == mEdge) {
 			Set<String> values = (Set<String>) newValue;
@@ -73,21 +74,21 @@ public class SettingsFragment extends BasePreferenceFragment
 			mEdge.setSummary(buildEdgeText(values));
 			return true;
 		} else if (preference == mSensitivity) {
-			putInt(Settings.SENSITIVITY, Integer.valueOf(newValue));
+			putInt(Settings.SENSITIVITY, (Integer) newValue);
 			return true;
 		} else if (preference == mLollipop) {
-			putBoolean(Settings.LOLLIPOP_HACK, Boolean.valueOf(newValue));
+			putBoolean(Settings.LOLLIPOP_HACK, (Boolean) newValue);
 			return true;
 		} else if (preference == mScrollToReturn) {
-			putBoolean(Settings.SCROLL_TO_RETURN, Boolean.valueOf(newValue));
+			putBoolean(Settings.SCROLL_TO_RETURN, (Boolean) newValue);
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	private Set<String> parseEdgePref(int pref) {
-		HashSet<String> ret = new HashSet<String>();
+		HashSet<String> ret = new HashSet<>();
 		if ((pref & SwipeBackLayout.EDGE_LEFT) != 0) {
 			ret.add(EDGE_LEFT);
 		}
