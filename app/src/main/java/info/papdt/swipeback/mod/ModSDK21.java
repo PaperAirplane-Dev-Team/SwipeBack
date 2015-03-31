@@ -1,8 +1,8 @@
 package info.papdt.swipeback.mod;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +52,8 @@ public class ModSDK21
 			setAdditionalInstanceField(activity.getWindow(), "helper", helper);
 		}
 	}
-	
+
+	@TargetApi(21)
 	public static void afterOnPostCreateSDK21(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
 		Class<?> internalStyleable = findClass("com.android.internal.R.styleable", null);
 		int[] internalTheme = $(getStaticObjectField(internalStyleable, "Theme"));
