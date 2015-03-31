@@ -2,9 +2,9 @@ bin/
 gen/
 obj/
 libs/*/*.so
-*.iml
 .gradle
-.idea/*
+.idea
 build
+*.iml
 local.properties
 signing.properties
