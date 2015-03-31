@@ -82,6 +82,9 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				helper.getSwipeBackLayout().setSensitivity(activity, (float) sensitivity / 100.0f);
 				
 				setAdditionalInstanceField(activity, "helper", helper);
+
+				// Fix rotation
+				ModRotationFix.fixOnActivityCreate(activity);
 				
 				if (Build.VERSION.SDK_INT >= 21)
 					ModSDK21.afterOnCreateSDK21(helper, activity, packageName, className);
@@ -124,9 +127,13 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 		findAndHookMethod(Activity.class, "finish", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+				Activity activity = $(mhparams.thisObject);
+
+				// Fix rotation first
+				ModRotationFix.fixOnActivityFinish(activity);
+
 				MySwipeBackHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 				if (helper != null && helper.getSwipeBackLayout().getScrollPercent() < 1) {
-					Activity activity = $(mhparams.thisObject);
 					String packageName = activity.getApplicationInfo().packageName;
 					String className = activity.getClass().getName();
 					
