@@ -115,7 +115,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				if (mhparams.getResult() == null) {
 					SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 					if (helper != null) {
-						mhparams.setResult(helper.findViewById((int) mhparams.args[0]));
+						mhparams.setResult(helper.findViewById((Integer) mhparams.args[0]));
 					}
 				}
 			}
@@ -138,7 +138,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 					Object isFinishing = getAdditionalInstanceField(mhparams.thisObject, "isFinishing");
 					
 					// Replace the default 'finish' by scrollToFinish
-					if (isFinishing == null || !Boolean.valueOf(isFinishing)) {
+					if (isFinishing == null || !(Boolean) isFinishing) {
 						setAdditionalInstanceField(mhparams.thisObject, "isFinishing", true);
 						mhparams.setResult(null);
 						helper.getSwipeBackLayout().scrollToFinishActivity();
@@ -166,7 +166,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 
 				boolean isHome = false;
 				if (Build.VERSION.SDK_INT >= 19) {
-					isHome = Boolean.valueOf(callMethod(mhparams.thisObject, "isHomeActivity"));
+					isHome = (Boolean) callMethod(mhparams.thisObject, "isHomeActivity");
 				} else {
 					isHome = getBooleanField(mhparams.thisObject, "isHomeActivity");
 				}
