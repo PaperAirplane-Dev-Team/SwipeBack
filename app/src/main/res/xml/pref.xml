@@ -13,7 +13,8 @@
 		android:title="@string/edge"
 		android:dependency="enable"
 		android:entries="@array/edge_list"
-		android:entryValues="@array/edge_values"/>
+		android:entryValues="@array/edge_values"
+		android:defaultValue="@array/edge_values"/>
 	
 	<info.papdt.swipeback.ui.preference.DiscreteSeekBarPreference
 		android:key="sensitivity"
