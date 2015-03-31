@@ -7,4 +7,4 @@ libs/*/*.so
 build
 *.iml
 local.properties
-
+signing.properties
