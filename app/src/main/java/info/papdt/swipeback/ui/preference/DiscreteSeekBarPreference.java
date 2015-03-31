@@ -89,7 +89,7 @@ public class DiscreteSeekBarPreference extends Preference implements DiscreteSee
 
 	@Override
 	protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-		setValue(restorePersistedValue ? getPersistedInt(mValue) : Integer.valueOf(defaultValue));
+		setValue(restorePersistedValue ? getPersistedInt(mValue) : (Integer) defaultValue);
 	}
 
 	@Override
