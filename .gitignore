@@ -4,6 +4,7 @@ obj/
 libs/*/*.so
 *.iml
 .gradle
-.idea
+.idea/*
 build
 local.properties
+signing.properties
