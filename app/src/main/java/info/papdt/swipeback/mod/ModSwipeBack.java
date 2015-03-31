@@ -82,6 +82,9 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				helper.getSwipeBackLayout().setSensitivity(activity, (float) sensitivity / 100.0f);
 				
 				setAdditionalInstanceField(activity, "helper", helper);
+
+				// Fix rotation
+				ModRotationFix.fixOnActivityCreate(activity);
 				
 				if (Build.VERSION.SDK_INT >= 21)
 					ModSDK21.afterOnCreateSDK21(helper, activity, packageName, className);
@@ -115,7 +118,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				if (mhparams.getResult() == null) {
 					SwipeBackActivityHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 					if (helper != null) {
-						mhparams.setResult(helper.findViewById((int) mhparams.args[0]));
+						mhparams.setResult(helper.findViewById((Integer) mhparams.args[0]));
 					}
 				}
 			}
@@ -124,9 +127,13 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 		findAndHookMethod(Activity.class, "finish", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+				Activity activity = $(mhparams.thisObject);
+
+				// Fix rotation first
+				ModRotationFix.fixOnActivityFinish(activity);
+
 				MySwipeBackHelper helper = $(getAdditionalInstanceField(mhparams.thisObject, "helper"));
 				if (helper != null && helper.getSwipeBackLayout().getScrollPercent() < 1) {
-					Activity activity = $(mhparams.thisObject);
 					String packageName = activity.getApplicationInfo().packageName;
 					String className = activity.getClass().getName();
 					
@@ -138,7 +145,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 					Object isFinishing = getAdditionalInstanceField(mhparams.thisObject, "isFinishing");
 					
 					// Replace the default 'finish' by scrollToFinish
-					if (isFinishing == null || !Boolean.valueOf(isFinishing)) {
+					if (isFinishing == null || !(Boolean) isFinishing) {
 						setAdditionalInstanceField(mhparams.thisObject, "isFinishing", true);
 						mhparams.setResult(null);
 						helper.getSwipeBackLayout().scrollToFinishActivity();
@@ -166,7 +173,7 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 
 				boolean isHome = false;
 				if (Build.VERSION.SDK_INT >= 19) {
-					isHome = Boolean.valueOf(callMethod(mhparams.thisObject, "isHomeActivity"));
+					isHome = (Boolean) callMethod(mhparams.thisObject, "isHomeActivity");
 				} else {
 					isHome = getBooleanField(mhparams.thisObject, "isHomeActivity");
 				}

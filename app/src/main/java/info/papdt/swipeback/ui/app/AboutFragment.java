@@ -35,6 +35,9 @@ public class AboutFragment extends BasePreferenceFragment
 		mSourceCode = $(this, SOURCE_CODE);
 		mLicense = $(this, LICENSE);
 		mDonation = $(this, DONATION);
+
+		// TODO: Make donations available
+		getPreferenceScreen().removePreference(mDonation);
 		
 		// Set values
 		String ver;
