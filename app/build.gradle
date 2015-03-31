@@ -13,15 +13,15 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //runProguard false
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-	compile 'com.android.support:appcompat-v7:+'
-    compile files('libs/XposedBridgeApi.jar')
+    compile 'com.android.support:appcompat-v7:+'
+    provided files('libs/XposedBridgeApi.jar')
     compile project(':libraries:SwipeBackLayout')
     compile project(':libraries:discreteSeekBar')
 }
