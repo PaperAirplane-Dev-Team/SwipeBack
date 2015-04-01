@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -103,6 +104,9 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 						setAdditionalInstanceField(mhparams.thisObject, "helper", null);
 						return;
 					}
+					
+					if ((activity.getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER) != 0)
+						return;
 					
 					helper.onPostCreate();
 					
