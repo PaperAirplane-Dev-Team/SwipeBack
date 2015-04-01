@@ -2,6 +2,7 @@ package info.papdt.swipeback.ui.app;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 
+import java.lang.ref.WeakReference;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,14 +46,19 @@ public class PerAppFragment extends BaseListFragment<AppModel>
 	@Override
 	protected List<AppModel> loadData(ProgressCallback callback) {
 		List<AppModel> list = new ArrayList<AppModel>();
-		PackageManager pm = getActivity().getPackageManager();
+		final PackageManager pm = getActivity().getPackageManager();
 		List<ApplicationInfo> la = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		
-		for (ApplicationInfo info : la) {
-			AppModel app = new AppModel();
+		for (final ApplicationInfo info : la) {
+			final AppModel app = new AppModel();
 			app.packageName = info.packageName;
 			app.title = pm.getApplicationLabel(info).toString();
-			app.icon = pm.getApplicationIcon(info);
+			app.iconRefreshRunnable = new Runnable() {
+				@Override
+				public void run() {
+					app.icon = new WeakReference<Drawable>(pm.getApplicationIcon(info));
+				}
+			};
 			list.add(app);
 			callback.updateProgress(list.size(), la.size());
 		}

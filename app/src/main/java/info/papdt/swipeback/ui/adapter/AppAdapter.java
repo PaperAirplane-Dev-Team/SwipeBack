@@ -1,6 +1,7 @@
 package info.papdt.swipeback.ui.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class AppAdapter extends BaseAdapter implements Filterable
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup container) {
+	public View getView(final int position, View convertView, ViewGroup container) {
 		if (position >= getCount())
 			return convertView;
 		
@@ -53,10 +54,33 @@ public class AppAdapter extends BaseAdapter implements Filterable
 		if (v == null)
 			v = mInflater.inflate(R.layout.app, container, false);
 		
-		AppModel app = mList.get(position);
+		final AppModel app = mList.get(position);
 		
-		ImageView icon = $(v, R.id.app_icon);
-		icon.setImageDrawable(app.icon);
+		final ImageView icon = $(v, R.id.app_icon);
+		icon.setTag(position);
+		Drawable iconDrawable = app.icon != null ? app.icon.get() : null;
+		if (iconDrawable != null) {
+			icon.setImageDrawable(iconDrawable);
+		} else {
+			icon.setImageDrawable(null);
+			
+			// Update recycled drawable
+			new Thread() {
+				@Override
+				public void run() {
+					app.refreshIcon();
+					if (icon.getTag().equals(position)) {
+						icon.post(new Runnable() {
+							@Override
+							public void run() {
+								if (app.icon != null)
+									icon.setImageDrawable(app.icon.get());
+							}
+						});
+					}
+				}
+			}.start();
+		}
 		
 		TextView title = $(v, R.id.app_name);
 		title.setText(app.title);
