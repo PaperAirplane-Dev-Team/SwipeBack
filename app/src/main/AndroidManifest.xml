@@ -27,6 +27,13 @@
 			</intent-filter>
 		</activity>
 		
+		<receiver
+			android:name=".receiver.ClassNameReceiver">
+			<intent-filter>
+				<action android:name="info.papdt.swipeback.intent.CLASS_NAME"/>
+			</intent-filter>
+		</receiver>
+		
 	</application>
 
 </manifest>
