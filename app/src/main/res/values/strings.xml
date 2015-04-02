@@ -28,6 +28,13 @@
 		<item>2</item>
 	</string-array>
 	
+	<!-- Notification -->
+	<string name="notify_title">SwipeBack settings</string>
+	<string name="notify_content" formatted="false">Package name: %s\nClass name: %s</string>
+	<string name="notify_summary">Click to open settings page</string>
+	<string name="notify_app">App</string>
+	<string name="notify_activity">Activity</string>
+	
 	<!-- About -->
 	<string name="about">About</string>
 	<string name="version">Version</string>

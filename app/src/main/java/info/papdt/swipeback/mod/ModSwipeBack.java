@@ -1,6 +1,7 @@
 package info.papdt.swipeback.mod;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Build;
@@ -21,6 +22,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 import info.papdt.swipeback.helper.MySwipeBackHelper;
 import info.papdt.swipeback.helper.Settings;
+import info.papdt.swipeback.receiver.ClassNameReceiver;
 import static info.papdt.swipeback.helper.Utility.*;
 import static info.papdt.swipeback.BuildConfig.DEBUG;
 
@@ -113,6 +115,20 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 					if (Build.VERSION.SDK_INT == 21)
 						ModSDK21.afterOnPostCreateSDK21(mhparams);
 				}
+			}
+		});
+		
+		findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(XC_MethodHook.MethodHookParam mhparams) throws Throwable {
+				// Notify the user the current class name
+				Activity activity = $(mhparams.thisObject);
+				String className = activity.getClass().getName();
+				String packageName = activity.getPackageName();
+				Intent i = new Intent(ClassNameReceiver.ACTION);
+				i.putExtra(ClassNameReceiver.EXTRA_CLASSNAME, className);
+				i.putExtra(ClassNameReceiver.EXTRA_PACKAGENAME, packageName);
+				activity.sendBroadcast(i);
 			}
 		});
 
