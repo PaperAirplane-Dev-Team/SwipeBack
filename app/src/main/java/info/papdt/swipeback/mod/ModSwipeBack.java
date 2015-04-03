@@ -126,8 +126,13 @@ public class ModSwipeBack implements IXposedHookLoadPackage, IXposedHookZygoteIn
 				String className = activity.getClass().getName();
 				String packageName = activity.getPackageName();
 				Intent i = new Intent(ClassNameReceiver.ACTION);
-				i.putExtra(ClassNameReceiver.EXTRA_CLASSNAME, className);
-				i.putExtra(ClassNameReceiver.EXTRA_PACKAGENAME, packageName);
+				
+				// Do not include the app itself
+				if (!packageName.equals("info.papdt.swipeback")) {
+					i.putExtra(ClassNameReceiver.EXTRA_CLASSNAME, className);
+					i.putExtra(ClassNameReceiver.EXTRA_PACKAGENAME, packageName);
+				}
+				
 				activity.sendBroadcast(i);
 			}
 		});
