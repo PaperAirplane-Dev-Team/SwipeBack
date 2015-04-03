@@ -1,5 +1,7 @@
 SwipeBack
 ---
+[![Build Status](https://travis-ci.org/PaperAirplane-Dev-Team/SwipeBack.svg?branch=master)](https://travis-ci.org/PaperAirplane-Dev-Team/SwipeBack)
+
 ![BANNER](https://raw.githubusercontent.com/PaperAirplane-Dev-Team/SwipeBack/master/art/banner.png)
 
 ![LOGO](https://raw.githubusercontent.com/PaperAirplane-Dev-Team/SwipeBack/master/art/Logo_FullSize_512.png)
