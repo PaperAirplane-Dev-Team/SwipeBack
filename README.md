@@ -22,6 +22,10 @@ Contributing
 5. NOTICE: DO NOT make a commit named "Routine:" or "Merge in xxx after reset to xxx"
 6. NOTICE: DO NOT INCLUDE ANY CHANGE TO BUILD CONFIGS IN REGULAR COMMITS
 
+Why anothor branch 'aide'?
+---
+The branch 'aide' is for builds with the AIDE(Android IDE), which lacks support of adding a jar as a reference. So we have to do some hacks that is not compatible with normal gradle. The two branches are synced automatically by a script.
+
 License
 ---
 See [LICENSE](https://raw.githubusercontent.com/PaperAirplane-Dev-Team/SwipeBack/master/LICENSE)
