@@ -19,6 +19,7 @@ public abstract class Settings
 	public static final String SENSITIVITY = "sensitivity";
 	public static final String LOLLIPOP_HACK = "lollipop_hack";
 	public static final String SCROLL_TO_RETURN = "scroll_to_return";
+	public static final String NOTIFY_SHORTCUT = "notify_shortcut";
 	
 	// A list of the existing settings keys. Needed for resetting.
 	private static final String[] KEYS = {
@@ -26,7 +27,8 @@ public abstract class Settings
 		EDGE,
 		SENSITIVITY,
 		LOLLIPOP_HACK,
-		SCROLL_TO_RETURN
+		SCROLL_TO_RETURN,
+		/* NOTIFY_SHORTCUT does not need resetting */
 	};
 	
 	private static XSettings sXSettings;

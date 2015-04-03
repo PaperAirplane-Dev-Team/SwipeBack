@@ -1,12 +1,12 @@
 package info.papdt.swipeback.receiver;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
-import android.support.v4.app.NotificationCompat;
+import android.os.Build;
 
 import info.papdt.swipeback.R;
 import info.papdt.swipeback.ui.base.GlobalActivity;
@@ -19,13 +19,16 @@ public class ClassNameReceiver extends BroadcastReceiver
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		if (Build.VERSION.SDK_INT < 16)
+			return;
+		
 		String packageName = intent.getStringExtra(EXTRA_PACKAGENAME);
 		String className = intent.getStringExtra(EXTRA_CLASSNAME);
 		
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		if (packageName != null && className != null) {
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			Notification.Builder builder = new Notification.Builder(context);
 			
 			// Notification content
 			String title = context.getResources().getString(R.string.notify_title);
@@ -34,8 +37,8 @@ public class ClassNameReceiver extends BroadcastReceiver
 			builder.setContentTitle(title);
 			builder.setContentText(content);
 			builder.setSmallIcon(android.R.color.transparent);
-			builder.setPriority(NotificationCompat.PRIORITY_LOW);
-			NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+			builder.setPriority(Notification.PRIORITY_LOW);
+			Notification.BigTextStyle style = new Notification.BigTextStyle();
 			style.setBigContentTitle(context.getResources().getString(R.string.notify_title));
 			style.bigText(content);
 			style.setSummaryText(summary);

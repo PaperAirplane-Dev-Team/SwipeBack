@@ -24,6 +24,13 @@
 		app:dsbp_max="100"
 		app:dsbp_format="%d%%"/>
 	
+	<CheckBoxPreference
+		android:key="notify_shortcut"
+		android:title="@string/notify_shortcut"
+		android:summary="@string/notify_shortcut_summary"
+		android:enabled="false"
+		android:checked="false"/>
+	
 	<PreferenceCategory
 		android:title="@string/experimental">
 		
