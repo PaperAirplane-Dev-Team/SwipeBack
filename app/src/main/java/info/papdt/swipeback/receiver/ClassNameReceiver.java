@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import android.support.v4.app.NotificationCompat;
 
@@ -19,6 +20,9 @@ public class ClassNameReceiver extends BroadcastReceiver
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		if (Build.VERSION.SDK_INT < 16)
+			return;
+		
 		String packageName = intent.getStringExtra(EXTRA_PACKAGENAME);
 		String className = intent.getStringExtra(EXTRA_CLASSNAME);
 		

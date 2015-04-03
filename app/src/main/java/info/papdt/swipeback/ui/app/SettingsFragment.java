@@ -33,7 +33,7 @@ public class SettingsFragment extends BasePreferenceFragment
 	private SwitchPreference mEnable;
 	private MultiSelectListPreference mEdge;
 	private DiscreteSeekBarPreference mSensitivity;
-	private CheckBoxPreference mLollipop, mScrollToReturn;
+	private CheckBoxPreference mLollipop, mScrollToReturn, mShortcut;
 	
 	private String mPackageName, mClassName;
 
@@ -54,12 +54,13 @@ public class SettingsFragment extends BasePreferenceFragment
 		mSensitivity = $(this, Settings.SENSITIVITY);
 		mLollipop = $(this, Settings.LOLLIPOP_HACK);
 		mScrollToReturn = $(this, Settings.SCROLL_TO_RETURN);
+		mShortcut = $(this, Settings.NOTIFY_SHORTCUT);
 		
 		// Default values
 		reload();
 		
 		// Bind
-		$$(mEnable, mEdge, mSensitivity, mLollipop, mScrollToReturn);
+		$$(mEnable, mEdge, mSensitivity, mLollipop, mScrollToReturn, mShortcut);
 	}
 
 	@Override
@@ -81,6 +82,9 @@ public class SettingsFragment extends BasePreferenceFragment
 			return true;
 		} else if (preference == mScrollToReturn) {
 			putBoolean(Settings.SCROLL_TO_RETURN, (Boolean) newValue);
+			return true;
+		} else if (preference == mShortcut) {
+			putBoolean(Settings.NOTIFY_SHORTCUT, (Boolean) newValue);
 			return true;
 		} else {
 			return false;
@@ -170,6 +174,16 @@ public class SettingsFragment extends BasePreferenceFragment
 		mEdge.setSummary(buildEdgeText(edges));
 		mSensitivity.setValue(getInt(Settings.SENSITIVITY, 100));
 		mScrollToReturn.setChecked(getBoolean(Settings.SCROLL_TO_RETURN, false));
+		
+		// Shortcut only available in global settings above API 16
+		if (mPackageName.equals("global")) {
+			if (Build.VERSION.SDK_INT >= 16) {
+				mShortcut.setEnabled(true);
+				mShortcut.setChecked(getBoolean(Settings.NOTIFY_SHORTCUT, false));
+			}
+		} else {
+			getPreferenceScreen().removePreference(mShortcut);
+		}
 		
 		if (Build.VERSION.SDK_INT >= 21) {
 			mLollipop.setEnabled(true);

@@ -12,6 +12,8 @@
 	<string name="enable">Enable SwipeBack</string>
 	<string name="edge">Trigger Edge</string>
 	<string name="sensitivity">Sensitivity</string>
+	<string name="notify_shortcut">Notification shortcut</string>
+	<string name="notify_shortcut_summary">Show a notification in notification drawer to lead you directly to the SwipeBack settings page of the current app / activity. With this you can get rid of the huge app list and activity list.</string>
 	<string name="experimental">Experimental</string>
 	<string name="lollipop_hack">Lollipop hacks (SDK >= 21)</string>
 	<string name="lollipop_hack_desc">Hacks specified for Lollipop and above. This includes optimizations for Lollipop, for example, this makes the status bar (if colored) look better while swiping.\nMay cause layout issues in some apps.\nIt is NOT recommended to enable this globally.</string>
