@@ -10,7 +10,7 @@ SwipeBack is an Xposed module which implements a global swipe-to-return gesture 
 
 How to build
 ---
-If you build with gradle - pull branch `master`
+If you build with gradle - pull branch `master`  
 If you build with AIDE - pull branch `aide`
 
 Contributing
