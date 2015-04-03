@@ -20,6 +20,7 @@ Contributing
 3. Modify
 4. Send a pull request to branch `master` here. Do not send pull request to `aide`.
 5. NOTICE: DO NOT make a commit named "Routine:" or "Merge in xxx after reset to xxx"
+6. NOTICE: DO NOT INCLUDE ANY CHANGE TO BUILD CONFIGS IN REGULAR COMMITS
 
 License
 ---
