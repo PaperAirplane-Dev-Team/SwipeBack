@@ -12,6 +12,8 @@
 	<string name="enable">启用 SwipeBack</string>
 	<string name="edge">触发边缘</string>
 	<string name="sensitivity">灵敏度</string>
+	<string name="notify_shortcut">通知栏快捷方式</string>
+	<string name="notify_shortcut_summary">在通知栏显示快捷方式，点击可直接进入当前App页面的滑动返回设置页面。</string>
 	<string name="experimental">试验性功能</string>
 	<string name="lollipop_hack">Lollipop 优化 (SDK >= 21)</string>
 	<string name="lollipop_hack_desc">对 Lollipop 及以上的系统进行优化（例如使有颜色的状态栏在滑动时少一些违和感）。\n可能在一些程序中引起布局问题。\n请*不要*在全局设置中打开这个选项。</string>
@@ -27,6 +29,13 @@
 		<item>1</item>
 		<item>2</item>
 	</string-array>
+	
+	<!-- Notification -->
+	<string name="notify_title">滑动返回设置</string>
+	<string name="notify_content" formatted="false">包名: %s\n类名: %s</string>
+	<string name="notify_summary">点击打开设置页面</string>
+	<string name="notify_app">应用</string>
+	<string name="notify_activity">当前页</string>
 	
 	<!-- About -->
 	<string name="about">关于</string>
